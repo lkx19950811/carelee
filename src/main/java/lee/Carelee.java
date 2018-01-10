@@ -10,7 +10,7 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 /**
  * 描述:
  *
- * @outhor Leo
+ * @author Leo
  * @create 2017-12-17 下午 4:44
  */
 @SpringBootApplication

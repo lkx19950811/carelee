@@ -11,14 +11,14 @@ import java.util.Map;
 /**
  * 描述:
  *
- * @outhor Leo
+ * @author Leo
  * @create 2017-12-17 下午 5:05
  */
 @RestController
 public class HelloController {
     @Autowired
     HelloService helloService;
-    @RequestMapping("/")
+    @RequestMapping("/hello")
     public String hello(){
         return helloService.hello();
     }

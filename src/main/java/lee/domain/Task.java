@@ -20,7 +20,7 @@ public class Task {
     private Date createTime ;
     private String taskDetail ;
     private String fatherId;
-
+    private Project project;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
@@ -61,6 +61,14 @@ public class Task {
 
     public void setFatherId(String fatherId) {
         this.fatherId = fatherId;
+    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
     }
 
     @Override

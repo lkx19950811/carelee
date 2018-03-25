@@ -23,6 +23,7 @@ public class Carelee extends SpringBootServletInitializer {
     }
 
     public static void main(String[] args) {
+        System.getProperties().put("lee", "test");
         SpringApplication.run(Carelee.class);
     }
 }

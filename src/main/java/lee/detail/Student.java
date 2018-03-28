@@ -1,5 +1,7 @@
 package lee.detail;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 
 /**
@@ -9,6 +11,7 @@ import java.io.Serializable;
  * @author Leo
  * @create 2018-03-13 上午 2:06
  */
+@JsonIgnoreProperties()
 public class Student implements Serializable {
     private static final long serialVersionUID = -5918016936767039419L;
     private String name;

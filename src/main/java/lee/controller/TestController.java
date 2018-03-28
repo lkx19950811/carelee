@@ -3,10 +3,9 @@ package lee.controller;
 import lee.detail.Student;
 import lee.task.Producers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * 描述:
@@ -34,5 +33,9 @@ public class TestController {
     public String rest(@PathVariable("id")String id) {
         return id;
     }
-
+    @RequestMapping(value = "st",method = RequestMethod.POST)
+    public Student student(@RequestBody Student st) {
+        st.setName("农脑子瓦特了" + st.getName());
+        return st;
+    }
 }

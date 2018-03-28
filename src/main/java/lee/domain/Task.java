@@ -63,7 +63,7 @@ public class Task {
         this.fatherId = fatherId;
     }
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id")
+//    @JoinColumn(name = "project_id")
     public Project getProject() {
         return project;
     }

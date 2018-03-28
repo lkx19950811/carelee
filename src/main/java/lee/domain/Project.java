@@ -17,7 +17,7 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long projectId;
     @OneToMany(mappedBy = "project")
-    private Set<Task> tasks = new HashSet<Task>();;
+    private Set<Task> tasks = new HashSet<Task>();
 
     public Long getProjectId() {
         return projectId;

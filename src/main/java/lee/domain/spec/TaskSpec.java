@@ -21,9 +21,10 @@ public class TaskSpec {
                 Path<String> exp2 = root.get("fatherId");
                 query.distinct(true);
                 query.where(cb.like(exp1,"小目标"),cb.equal(exp2,"2"));
-                query.groupBy(exp1);
-                query.having(cb.equal(cb.count(exp1),2));
-                return null;
+//                query.groupBy(exp1);
+//                query.having(cb.equal(cb.count(exp1),2));
+                //return null;
+               return cb.like(exp1,"aa");
             }
         };
     }

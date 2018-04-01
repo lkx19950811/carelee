@@ -1,5 +1,6 @@
 package lee.domain.spec;
 
+import lee.domain.Project;
 import lee.domain.Task;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -25,6 +26,17 @@ public class TaskSpec {
 //                query.having(cb.equal(cb.count(exp1),2));
                 //return null;
                return cb.like(exp1,"aa");
+            }
+        };
+    }
+    public static Specification<Task> findProject() {
+        return new Specification<Task>() {
+
+            @Override
+            public Predicate toPredicate(Root<Task> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Join<Task, Project> join = root.join("project", JoinType.INNER);
+                Path<String> exp4 = join.get("projectName");
+                return cb.like(exp4, "%测试%");
             }
         };
     }

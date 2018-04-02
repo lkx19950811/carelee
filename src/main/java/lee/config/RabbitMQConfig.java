@@ -1,12 +1,10 @@
 package lee.config;
 
-import lee.domain.Project;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 
 /**
  * Created by admin on 2017/6/1 11:26.
@@ -50,24 +48,25 @@ public class RabbitMQConfig {
         return rabbitAdmin;
     }
     @Bean
-    @Lazy(value = true)
-    public Project project() {
+    @Lazy( value = true)
+    public Project project(){
         Project project = new Project();
         System.out.println("project");
         return project;
     }
     @Bean
     @Lazy(value = true)
-    public Project Project() {
+    public Project Project(){
         Project project = new Project();
-        System.out.println("Porject");
+        System.out.println("Project");
         return project;
     }
-    @Bean(name = "myProject")
+    @Bean(name = "pp")
     @Lazy(value = true)
     public Project pproject(){
         Project project = new Project();
-        System.out.println("myProject");
+        System.out.println("pp");
         return project;
     }
+
 }

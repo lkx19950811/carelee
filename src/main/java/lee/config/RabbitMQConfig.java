@@ -53,21 +53,21 @@ public class RabbitMQConfig {
     @Lazy(value = true)
     public Project project() {
         Project project = new Project();
-        project.setProjectName("project");
+        System.out.println("project");
         return project;
     }
     @Bean
     @Lazy(value = true)
     public Project Project() {
         Project project = new Project();
-        project.setProjectName("Project");
+        System.out.println("Porject");
         return project;
     }
     @Bean(name = "myProject")
     @Lazy(value = true)
     public Project pproject(){
         Project project = new Project();
-        project.setProjectName("myProject");
+        System.out.println("myProject");
         return project;
     }
 }

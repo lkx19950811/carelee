@@ -3,7 +3,11 @@ package lee.task;
 import lee.detail.Student;
 import org.springframework.amqp.rabbit.core.RabbitMessagingTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
 /**
  * 描述:
  * 生产者
@@ -14,11 +18,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class Producers {
 
-    @Autowired
-    RabbitMessagingTemplate rabbitSendTemplate;
+    @Resource(name = "msgMessageTemplate")
+    RabbitMessagingTemplate msgMessageTemplate;
 
     public void send(Student student) {
         System.out.println("send start.....");
-        rabbitSendTemplate.convertAndSend("default.topic", "test2.send", student);
+        msgMessageTemplate.convertAndSend("default.topic", "test2.send", student);
     }
 }

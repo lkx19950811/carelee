@@ -108,7 +108,6 @@ public class CareTopicLogg {
         try {
             return objectMapper.writeValueAsString(arg);
         } catch (JsonProcessingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return "";
         }

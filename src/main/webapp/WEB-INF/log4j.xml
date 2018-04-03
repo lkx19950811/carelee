@@ -17,22 +17,36 @@
 -->
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 
-<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="http://jakarta.apache.org/log4j/ ">
   <!--
     - This is a sample configuration for log4j.
     - It simply just logs everything into a single log file.
     - Note, that you can use properties for value substitution.
     -->
-  <appender name="CORE" class="org.apache.log4j.FileAppender">
-    <param name="File"   value="${org.apache.cocoon.work.directory}/cocoon-logs/log4j.log" />
-    <param name="Append" value="false" />
-    <layout class="org.apache.log4j.PatternLayout">
-      <param name="ConversionPattern" value="%d %-5p %t %c - %m%n"/>
-    </layout>
+  <property name="log.path" value="F:\myPersonal\carelee\logs"/>
+
+  <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss} [%contextName] [%level] %logger{36} - %msg%n</pattern>
+    </encoder>
   </appender>
 
-  <root>
-    <priority value="${org.apache.cocoon.log4j.loglevel}"/>
-    <appender-ref ref="CORE"/>
+  <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${log.path}/%d{yyyy-MM}/%d{yyyy-MM-dd}.log</fileNamePattern>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss} [%level] %logger{36} [%file : %line] %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <root level="info">
+    <appender-ref ref="console"/>
+    <appender-ref ref="file"/>
   </root>
+
+  <logger name="lee" level="info"/>
 </log4j:configuration>

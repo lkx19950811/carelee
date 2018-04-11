@@ -14,5 +14,4 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @SpringBootTest(classes = Carelee.class)
 @WebAppConfiguration
 public class TestBasic  {
-
 }

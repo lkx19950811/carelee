@@ -11,6 +11,7 @@ import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletCont
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.util.StringUtils;
 
 /**
@@ -20,6 +21,7 @@ import org.springframework.util.StringUtils;
  * @create 2017-12-17 下午 4:44
  */
 @SpringBootApplication
+@EnableScheduling
 public class Carelee extends SpringBootServletInitializer implements EmbeddedServletContainerCustomizer {
     private static final Logger logger = LoggerFactory.getLogger(Carelee.class);
     @Value("${server.additional-ports}")

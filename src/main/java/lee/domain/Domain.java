@@ -5,6 +5,7 @@ import org.hibernate.annotations.Parameter;
 import org.hibernate.id.enhanced.SequenceStyleGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Date;
  * @create 2017-12-17 下午 10:34
  */
 @MappedSuperclass
-public class Domain {
+public class Domain implements Serializable {
     /**
      * 条目id,数据库主键，自动赋值，不需要程序员手工赋值
      */

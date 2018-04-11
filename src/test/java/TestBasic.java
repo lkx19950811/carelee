@@ -5,7 +5,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 /**
- * 描述:
+ * 描述: 测试的基类
  *
  * @author Leo
  * @create 2017-12-17 下午 11:03

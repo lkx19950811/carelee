@@ -25,7 +25,10 @@ public class JedisTest extends TestBasic{
     private StringRedisTemplate stringRedisTemplate;
     @Autowired
     private RedisTemplate redisTemplate;
-    @Resource(name = "redisTemplate") //神奇吗
+    @Resource(name = "redisTemplate") //神奇吗 这个
+    /**
+     * 是不是很奇怪，毫无父子兄弟关系的两个类，怎么能互相注入呢？这个是Spring的Editor机制，搜索下ValueOperationsEditor这个类就知道了，Spring在注入的时候调用了Editor的setValue方法。
+     */
     private ValueOperations<String,Student> valueOperations;
     @Test
     public void jedisTest() {

@@ -26,6 +26,5 @@ hs_err_pid*
 .gitignore
 .idea/workspace.xml
 target/
-/src/test/
 /.idea/
 /carelee.iml

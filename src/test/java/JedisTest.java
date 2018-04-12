@@ -32,9 +32,15 @@ public class JedisTest extends TestBasic{ //redisTemplate测试类
     private RedisTemplate redisTemplate;
     @Resource(name = "redisTemplate") //神奇吗 这个
     /**
-     * 是不是很奇怪，毫无父子兄弟关系的两个类，怎么能互相注入呢？这个是Spring的Editor机制，搜索下ValueOperationsEditor这个类就知道了，Spring在注入的时候调用了Editor的setValue方法。
+     * 是不是很奇怪，毫无父子兄弟关系的两个类，怎么能互相注入呢？这个是Spring的Editor机制，
+     * 搜索下ValueOperationsEditor这个类就知道了，Spring在注入的时候调用了Editor的setValue方法。
      */
     private ValueOperations<String,Student> valueOperations;
+
+    /**
+     * redis提供了分片api,通过hash一致性算法,将值均匀分布在节点内
+     * 缺点:节点分布不均匀,系统健壮性较差
+     */
     @Test
     public void jedisTest() { //redis 分片
         List<JedisShardInfo> listinfo = new ArrayList<JedisShardInfo>();
@@ -49,6 +55,10 @@ public class JedisTest extends TestBasic{ //redisTemplate测试类
             jedis.set(i + "key",i + "value");
         }
     }
+
+    /**
+     * 存入student对象
+     */
     @Test
     public void redisTemp(){
         Student student = new Student();
@@ -57,6 +67,11 @@ public class JedisTest extends TestBasic{ //redisTemplate测试类
         Student s = (Student) redisTemplate.opsForValue().get("lkx");
         System.out.println(s.getName());
     }
+
+    /**
+     * 存入student对象,并设置失效时间
+     * @throws InterruptedException
+     */
     @Test
     public void valueOp() throws InterruptedException {
         Student student = new Student();
@@ -68,8 +83,12 @@ public class JedisTest extends TestBasic{ //redisTemplate测试类
         Thread.sleep(15100);
         System.out.println(valueOperations.get("xxx"));
     }
+
+    /**
+     * redis  list测试 list api集合
+     */
     @Test
-    public void ListTest(){ //redis  list测试 list api集合
+    public void ListTest(){
         ListOperations<String,String> vo = redisTemplate.opsForList();
         vo.leftPush("book", "wzg"); // 左进栈..........1
         Log(vo.range("book",0,-1)); // 0,-1返回全部 -1是从后往前数 同理-2就是倒数第二个
@@ -99,7 +118,7 @@ public class JedisTest extends TestBasic{ //redisTemplate测试类
         redisTemplate.delete("book");
         redisTemplate.delete("bag");
     }
-    public void Log( Object o){
+    private void Log(Object o){
         logger.info(sum + ":......." +  String.valueOf(o));
         sum++;
     }

@@ -5,6 +5,8 @@ import lee.task.Producers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -37,5 +39,22 @@ public class TestController {
     public Student student(@RequestBody Student st) {
         st.setName("农脑子瓦特了" + st.getName());
         return st;
+    }
+
+    @RequestMapping(value = "/body",method = {RequestMethod.GET,RequestMethod.POST})
+    public Map body(@RequestBody Student student,HttpServletRequest request){
+        Map<String,String> rerturnmap = new HashMap<String, String>();
+        rerturnmap.put("name",student.getName());
+        rerturnmap.put("sometoSay",student.getAddress() + "是你家地址对吗?");
+        System.out.println("这是body");
+        System.out.println(request.getAttribute("lkx"));
+        return rerturnmap;
+    }
+    @ModelAttribute //该方法会在进入这个controller时就执行
+    public void init(HttpServletRequest request)
+    {
+        System.out.println(request);
+        request.setAttribute("lkx","lkx");
+        System.out.println("最先执行的方法");
     }
 }

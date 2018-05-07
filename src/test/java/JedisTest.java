@@ -62,9 +62,9 @@ public class JedisTest extends TestBasic{ //redisTemplate测试类
     @Test
     public void redisTemp(){
         Student student = new Student();
-        student.setName("lkx");
-        redisTemplate.opsForValue().set("lkx",student);
-        Student s = (Student) redisTemplate.opsForValue().get("lkx");
+        student.setName("lkx56");
+        redisTemplate.opsForValue().set("13245",student);
+        Student s = (Student) redisTemplate.opsForValue().get("13245");
         System.out.println(s.getName());
     }
 

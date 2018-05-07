@@ -11,7 +11,10 @@ import org.springframework.data.domain.PageRequest;
 import javax.annotation.Resource;
 import java.util.List;
 
-public class Tasktest extends TestBasic {
+/**
+ * JPA复杂查询测试
+ */
+public class JPASpecTest extends TestBasic {
     @Autowired
     TaskRepository taskRepository;
     @Autowired
@@ -42,5 +45,9 @@ public class Tasktest extends TestBasic {
 
     public static void main(String[] args){
 
+    }
+    @Test
+    public void test4(){
+        System.out.println(projectRepository.findByProjectName("first"));
     }
 }

@@ -1,14 +1,24 @@
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import lee.detail.Student;
+import lee.domain.Project;
+import lee.domain.Record;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Test;
+import org.springframework.data.redis.core.ListOperations;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TokenTest {
@@ -87,5 +97,30 @@ public class TokenTest {
         //使用org.apache.commons.codec.digest.DigestUtils 直接进行md5加密,是上面方法的封装
         String md5 = DigestUtils.md5Hex("yourpassword" + "salt");
         System.out.println(md5);
+    }
+    @Test
+    public void arrays(){
+        String[] a = {"a","d","vv"};
+        System.out.println(a[a.length-1]);
+    }
+    /* UseSingleQuotes———输出key时是否使用单引号,默认为false
+     * QuoteFieldNames———-输出key时是否使用双引号,默认为true
+     * WriteMapNullValue——–是否输出值为null的字段,默认为false
+     * WriteNullNumberAsZero—-数值字段如果为null,输出为0,而非null
+     * WriteNullListAsEmpty—–List字段如果为null,输出为[],而非null
+     * WriteNullStringAsEmpty—字符类型字段如果为null,输出为"",而非null
+     * WriteNullBooleanAsFalse–Boolean字段如果为null,输出为false,而非null
+     */
+    @Test
+    public void to(){
+        Map map = new HashMap();
+        List list = new ArrayList();
+        list.add(new Student());
+        map.put("list",list);
+        String json = JSONObject.toJSONString(map,
+                SerializerFeature.WriteMapNullValue,//输出为null的字段
+                SerializerFeature.WriteNullStringAsEmpty,//null转为空字符串
+                SerializerFeature.UseSingleQuotes);//key为单引号
+        System.out.println(json);
     }
 }

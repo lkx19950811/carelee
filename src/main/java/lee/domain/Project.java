@@ -26,6 +26,7 @@ public class Project {
     public void setProjectId(Long projectId) {
         this.projectId = projectId;
     }
+    @Column( name = "projectName")
     private String projectName;
 
     public String getProjectName() {

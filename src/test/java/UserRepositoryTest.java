@@ -3,6 +3,8 @@ import lee.repository.UserRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 /**
  * 描述:
  *
@@ -23,5 +25,10 @@ public class UserRepositoryTest extends TestBasic {
             return;
         }
         userRepository.save(user);
+    }
+    @Test
+    public void test1(){
+        List<User> list = userRepository.findUserSM();
+        System.out.println(list);
     }
 }

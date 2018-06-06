@@ -27,7 +27,13 @@ public class User extends Domain{
      */
     private String passWord;
 
+    public User() {
+    }
 
+    public User(String userName, String user) {
+        this.userName = userName;
+        this.user = user;
+    }
 
     public String getUserName() {
         return userName;

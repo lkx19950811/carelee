@@ -1,6 +1,10 @@
 package lee.repository;
 
 import lee.domain.User;
+import org.springframework.data.jpa.repository.Query;
+
+import javax.jws.soap.SOAPBinding;
+import java.util.List;
 
 /**
  * 描述:
@@ -10,4 +14,6 @@ import lee.domain.User;
  */
 public interface UserRepository extends Repository<User> {
     User findByUser(String user);
+    @Query("select new User (u.userName,u.user) from User u")
+    List<User> findUserSM();
 }

@@ -30,8 +30,8 @@ import java.util.Map;
  * @author Leo
  * @create 2018-01-10 下午 4:17
  */
-public class CareleeHttpClient {
-    private static Logger logger = Logger.getLogger(CareleeHttpClient.class);
+public class HttpClient {
+    private static Logger logger = Logger.getLogger(HttpClient.class);
 
     /**
      * get请求

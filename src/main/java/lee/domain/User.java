@@ -14,12 +14,12 @@ import javax.persistence.Entity;
 @Entity
 public class User extends Domain{
     /**
-     * 用户名
+     * 昵称
      */
     @JsonProperty("username")
     private String userName;
     /**
-     * 用户姓名
+     * 用户名
      */
     private String user;
     /**
@@ -27,12 +27,38 @@ public class User extends Domain{
      */
     private String passWord;
 
+    /**
+     * 邮箱
+     */
+    private String email;
+
+    /**
+     * 权限
+     */
+    private String limits;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getLimits() {
+        return limits;
+    }
+
+    public void setLimits(String limits) {
+        this.limits = limits;
+    }
+
     public User() {
     }
 
-    public User(String userName, String user) {
-        this.userName = userName;
-        this.user = user;
+    public User(String email,String passWord) {
+        this.passWord = passWord;
+        this.email = email;
     }
 
     public String getUserName() {

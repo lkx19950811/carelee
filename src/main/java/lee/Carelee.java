@@ -32,7 +32,6 @@ public class Carelee extends SpringBootServletInitializer implements EmbeddedSer
     }
 
     public static void main(String[] args) {
-        System.getProperties().put("lee", "test");
         SpringApplication.run(Carelee.class);
     }
 

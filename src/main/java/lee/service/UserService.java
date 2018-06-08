@@ -20,7 +20,7 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
     public ReturnObject addUser(User user) throws Exception {
-        Optional<User> optionalUser = Optional.ofNullable(userRepository.findByUser(user.getEmail()));
+        Optional<User> optionalUser = Optional.ofNullable(userRepository.findByEmail(user.getEmail()));
         if (optionalUser.isPresent()){
             return ReturnObject.re(Code.FAIL,"用户名已存在",null);
         }else {
@@ -31,7 +31,7 @@ public class UserService {
         }
     }
     public ReturnObject login(User user){
-        Optional<User> optionalUser = Optional.ofNullable(userRepository.findByUser(user.getEmail()));
+        Optional<User> optionalUser = Optional.ofNullable(userRepository.findByEmail(user.getEmail()));
         if (optionalUser.isPresent()){
             if (MD5Utils.verify(user.getPassWord(),optionalUser.get().getPassWord())){
                 return ReturnObject.re(Code.OK,"登录成功",null);

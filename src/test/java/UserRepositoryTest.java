@@ -20,7 +20,7 @@ public class UserRepositoryTest extends TestBasic {
         user.setUser("lkx");
         user.setPassWord("lkx");
         user.setUserName("李凯鑫");
-        if (user.equals(userRepository.findByUser("lkx"))){
+        if (user.equals(userRepository.findByEmail("lkx"))){
             System.out.println("数据库中已有该用户");
             return;
         }

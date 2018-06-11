@@ -1,12 +1,13 @@
 package lee.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sun.org.apache.xalan.internal.xsltc.dom.SimpleResultTreeImpl;
 
 import javax.persistence.Entity;
 
 /**
  * 描述:
- * 用户注册信息类
+ * 管理员
  *
  * @author Leo
  * @create 2017-12-17 下午 8:30
@@ -36,6 +37,19 @@ public class User extends Domain{
      * 权限
      */
     private String limits;
+
+    /**
+     * 手机
+     */
+    private String mobilephone;
+
+    public String getMobilephone() {
+        return mobilephone;
+    }
+
+    public void setMobilephone(String mobilephone) {
+        this.mobilephone = mobilephone;
+    }
 
     public String getEmail() {
         return email;

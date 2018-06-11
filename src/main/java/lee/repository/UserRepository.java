@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 /**
- * 描述:
+ * 描述:管理员仓库类
  *
  * @author Leo
  * @create 2017-12-17 下午 10:57

@@ -37,17 +37,17 @@ public class AcessFiletr implements Filter {
         String uri = request.getRequestURI();
 
         // 除了登录页面以外的页面和登录action以外，检查登录情况，未登录的需要重定向并且不通过过滤
-        if (uri.indexOf("admin/login") == -1 && uri.indexOf("login.html") == -1 && !uri.equals("/")) {
-            if ( uri.indexOf("js") >0 || uri.indexOf("css")>=0 || uri.indexOf("images")>=0
-                    || uri.indexOf("fonts")>=0 || uri.indexOf("lib")>=0){//不过滤静态资源
-                filterChain.doFilter(request, response);
-                return;
-            }
-            if ((userName == null || userName.equals(""))) {
-                response.sendRedirect("/login.html");
-                return;
-            }
-        }
+//        if (uri.indexOf("admin/login") == -1 && uri.indexOf("login.jsp") == -1 && !uri.equals("/")) {
+//            if ( uri.indexOf("js") >0 || uri.indexOf("css")>=0 || uri.indexOf("images")>=0
+//                    || uri.indexOf("fonts")>=0 || uri.indexOf("lib")>=0 || uri.indexOf("ico")>=0){//不过滤静态资源
+//                filterChain.doFilter(request, response);
+//                return;
+//            }
+//            if ((userName == null || userName.equals(""))) {
+//                response.sendRedirect("/login.jsp");
+//                return;
+//            }
+//        }
         filterChain.doFilter(request, response);
     }
 

@@ -42,4 +42,7 @@ public class UserService {
             return ReturnObject.re(Code.FAIL,"用户名不存在",null);
         }
     }
+    public Long countUser(){
+        return userRepository.count();
+    }
 }

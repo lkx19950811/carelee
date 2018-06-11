@@ -30,7 +30,7 @@ public class HelloController {
     }
     @RequestMapping({"/",""})
     public ModelAndView index(){
-        return new ModelAndView("forward:/login.html");
+        return new ModelAndView("/admin/login");
     }
 
 }

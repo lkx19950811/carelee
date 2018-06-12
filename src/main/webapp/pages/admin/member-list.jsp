@@ -35,11 +35,11 @@
     </div>
     <div class="x-body">
       <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so">
-          <input class="layui-input" placeholder="开始日" name="start" id="start">
-          <input class="layui-input" placeholder="截止日" name="end" id="end">
-          <input type="text" name="username"  placeholder="请输入用户名" autocomplete="off" class="layui-input">
-          <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+        <form class="layui-form layui-col-md12 x-so" action="/member/memberList?page=0&size=${params.size}&sort=createdDate,desc">
+          <input class="layui-input" placeholder="开始日" name="start" id="start" value="${params.start}">
+          <input class="layui-input" placeholder="截止日" name="end" id="end" value="${params.end}">
+          <input type="text" name="name"  placeholder="请输入用户名" autocomplete="off" class="layui-input" value="${params.name}">
+          <button type="submit" class="layui-btn"  lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
         </form>
       </div>
       <xblock>
@@ -64,7 +64,7 @@
         <c:forEach var="member" items="${members}">
           <tr>
             <td>
-              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
+              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${member.id}'><i class="layui-icon">&#xe605;</i></div>
             </td>
             <td>${member.id}</td>
             <td>${member.name}</td>
@@ -105,18 +105,18 @@
       </table>
       <div class="page">
         <div>
-          <a class="prev" href="/member/memberList?page=${currPage-1==0?currPage:currPage-1}&size=${size}&sort=createdDate,desc">&lt;&lt;</a>
-          <c:forEach var="i" begin="${0}" end="${page.totalPages-1}">
+          <a class="prev" href="/member/memberList?page=${currPage-1==0?currPage:currPage-1}&size=${params.size}&sort=createdDate,desc&name=${params.name}&start=${params.start}&end=${params.end}">&lt;&lt;</a>
+          <c:forEach var="i" begin="${0}" end="${page.totalPages-1<0?0:page.totalPages}">
             <c:choose>
               <c:when test="${i==currPage}">
                 <span class="current"  onclick="javascript:void (0)">${i+1}</span>
               </c:when>
-              <c:when test="${i<10 || i==(page.totalPages-1)}">
-                <a class="num" href="/member/memberList?page=${i}&size=${size}&sort=createdDate,desc">${i+1}</a>
+              <c:when test="${i<10 && i!=currPage && i==(page.totalPages-1)}">
+                <a class="num" href="/member/memberList?page=${i}&size=${params.size}&sort=createdDate,desc&name=${params.name}&start=${params.start}&end=${params.end}">${i+1}</a>
               </c:when>
             </c:choose>
           </c:forEach>
-          <a class="next" href="/member/memberList?page=${currPage+1==page.totalPages?currPage:currPage+1}&size=${size}&sort=createdDate,desc">&gt;&gt;</a>
+          <a class="next" href="/member/memberList?page=${currPage+1==page.totalPages?currPage:currPage+1}&size=${params.size}&sort=createdDate,desc&name=${params.name}&start=${params.start}&end=${params.end}">&gt;&gt;</a>
         </div>
       </div>
 
@@ -188,15 +188,57 @@
 
 
       function delAll (argument) {
-
         var data = tableCheck.getData();
-  
-        layer.confirm('确认要删除吗？'+data,function(index){
+        console.log(data)
+        layer.confirm('确认要删除吗？',function(index){
             //捉到所有被选中的，发异步进行删除
-            layer.msg('删除成功', {icon: 1});
-            $(".layui-form-checked").not('.header').parents('tr').remove();
+            $.post("/member/delMembers",{ids:data},function (res) {
+                if (res.code=="OK"){
+                  layer.msg(res.message, {icon: 1});
+                  $(".layui-form-checked").not('.header').parents('tr').remove();
+                }else {
+                  layer.msg(res.message, {icon: 1});
+                }
+            })
+
         });
       }
+
+      <%--layui.use(['form','layer'], function(){--%>
+          <%--$ = layui.jquery;--%>
+          <%--var form = layui.form--%>
+              <%--,layer = layui.layer;--%>
+
+          <%--//自定义验证规则--%>
+          <%--// form.verify({--%>
+          <%--//     nikename: function(value){--%>
+          <%--//         if(value.length < 2){--%>
+          <%--//             return '昵称至少得2个字符啊';--%>
+          <%--//         }--%>
+          <%--//     }--%>
+          <%--//     ,pass: [/(.+){6,12}$/, '密码必须6到12位']--%>
+          <%--//     ,repass: function(value){--%>
+          <%--//         if($('#L_pass').val()!=$('#L_repass').val()){--%>
+          <%--//             return '两次密码不一致';--%>
+          <%--//         }--%>
+          <%--//     }--%>
+          <%--// });--%>
+
+          <%--//监听提交--%>
+          <%--form.on('submit(search)', function(data){--%>
+              <%--console.log(data.field);--%>
+              <%--//发异步，把数据提交给php--%>
+              <%--$.post("/member/memberList?page=0&size=${params.size}&sort=createdDate,desc",data.field,function (res) {--%>
+                  <%--if (res.code=='OK') {--%>
+                          <%--//刷新页面--%>
+                          <%--refresh();--%>
+                  <%--}else {--%>
+                      <%--layer.alert("查询失败", {icon: 5})--%>
+                  <%--}--%>
+              <%--},"json");--%>
+              <%--return false;--%>
+          <%--});--%>
+      <%--});--%>
     </script>
   </body>
 

@@ -1,6 +1,12 @@
 package lee.repository;
 
 import lee.domain.Member;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * @author leon
@@ -8,4 +14,13 @@ import lee.domain.Member;
  * @desc 会员仓库类
  */
 public interface MemberRepository extends Repository<Member> {
+    /**
+     * 批量删除会员接口
+     * @param ids
+     * @return
+     */
+    @Modifying
+    @Transactional
+    @Query(value="delete from Member m where m.id in (:ids) ")
+    int deleteByIds(@Param("ids")List<Long> ids);
 }

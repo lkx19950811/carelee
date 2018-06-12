@@ -3,6 +3,7 @@ package lee.controller;
 import lee.common.Code;
 import lee.common.ReturnObject;
 import lee.domain.Member;
+import lee.domain.spec.MemberSpec;
 import lee.service.MemberService;
 import lee.utils.MD5Utils;
 import org.slf4j.Logger;
@@ -10,12 +11,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.repository.query.Param;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -34,15 +41,25 @@ public class MemberController {
      * @return
      */
     @RequestMapping("memberList")
-    public ModelAndView memberList(HttpServletRequest request, Pageable pageable){
-        Page<Member> members = memberService.members(pageable);
-        Long count = memberService.countMembers();
+    public ModelAndView memberList(HttpServletRequest request, Pageable pageable,@RequestParam(required = false) String start,@RequestParam(required = false) String end,@RequestParam(required = false) String name ) throws Exception {
+        Page<Member> members = null;
+        if (!StringUtils.isEmpty(start) || !StringUtils.isEmpty(end) || !StringUtils.isEmpty(name)){
+            Specification<Member> specification = MemberSpec.findMembers(start,end,name);
+            members = memberService.members(specification,pageable);
+        }else {
+            members = memberService.members(pageable);
+        }
+        Map<String,Object> params= new HashMap<>();
+        params.put("start",start);
+        params.put("end",end);
+        params.put("name",name);
+        params.put("size",pageable.getPageSize());
         ModelAndView modelAndView = new ModelAndView("/admin/member-list");
         modelAndView.addObject("members",members.getContent());
         modelAndView.addObject("count",members.getTotalElements());
         modelAndView.addObject("currPage",pageable.getPageNumber());
         modelAndView.addObject("page",members);
-        modelAndView.addObject("size",pageable.getPageSize());
+        modelAndView.addObject("params",params);
         return modelAndView;
     }
 
@@ -157,9 +174,29 @@ public class MemberController {
         return ReturnObject.re(Code.OK,"修改密码成功",null);
     }
 
+    /**
+     * 删除单个会员
+     * @param id
+     * @return
+     */
     @RequestMapping("delMember")
     public ReturnObject delMember(@RequestParam Long id){
         memberService.delByid(id);
         return ReturnObject.re(Code.OK,"删除成功",null);
+    }
+
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
+    @RequestMapping("delMembers")
+    public ReturnObject delMembers(@RequestParam(value = "ids[]")Long[] ids){
+        Integer result = memberService.delByids(ids);
+        if (result>0){
+            return ReturnObject.re(Code.OK,"批量删除成功");
+        }else {
+            return ReturnObject.re(Code.FAIL,"批量删除失败");
+        }
     }
 }

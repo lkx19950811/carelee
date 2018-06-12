@@ -24,8 +24,17 @@ public class ReturnObject {
         this.message = message;
         this.object = object;
     }
+    public ReturnObject(){
+
+    }
     public static ReturnObject re(Code code, String message, Object object){
         return new ReturnObject(code,message,object);
+    }
+    public static ReturnObject re(Code code, String message){
+        ReturnObject object = new ReturnObject();
+        object.setCode(code);
+        object.setMessage(message);
+        return object;
     }
     public Code getCode() {
         return code;

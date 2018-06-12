@@ -5,9 +5,10 @@ import lee.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,15 +31,10 @@ public class MemberService {
         Page<Member> members = memberRepository.findAll(pageable);
         return members;
     }
-
-    /**
-     * 统计会员数量
-     * @return 会员数量
-     */
-    public Long countMembers(){
-        return memberRepository.count();
+    public Page<Member> members(Specification<Member> specification,Pageable pageable){
+        Page<Member> members = memberRepository.findAll(specification,pageable);
+        return members;
     }
-
     /**
      * 保存会员信息
      * @param member
@@ -59,7 +55,15 @@ public class MemberService {
         return optionalMember;
     }
 
+    /**
+     * 根据id删除单个会员
+     * @param id
+     */
     public void delByid(Long id){
         memberRepository.delete(id);
+    }
+    public int delByids(Long[] ids){
+        List<Long> list = Arrays.asList(ids);
+        return memberRepository.deleteByIds(list);
     }
 }

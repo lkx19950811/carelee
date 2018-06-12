@@ -1,5 +1,6 @@
 package lee.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,7 +15,7 @@ public class DateTimeUtils {
 	 * @param date
 	 * @return
 	 */
-	public static Date endTime(Date date) throws Exception{
+	public static Date endTime(Date date){
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		calendar.set(Calendar.HOUR_OF_DAY, 23);
@@ -30,11 +31,15 @@ public class DateTimeUtils {
 	 * @param date
 	 * @return
 	 */
-	public static Date endTime(String date) throws Exception{
+	public static Date endTime(String date) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd mm:ss");
 		
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(dateFormat.parse(date));
+		try {
+			calendar.setTime(dateFormat.parse(date));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		calendar.set(Calendar.HOUR_OF_DAY, 23);
 		calendar.set(Calendar.MINUTE, 59);
 		calendar.set(Calendar.SECOND, 59);
@@ -67,7 +72,7 @@ public class DateTimeUtils {
 	
 	public static Date startTime(String date) {
 		try {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd mm:ss");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(dateFormat.parse(date));

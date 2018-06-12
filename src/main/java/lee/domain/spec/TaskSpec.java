@@ -15,29 +15,22 @@ import javax.persistence.criteria.*;
  */
 public class TaskSpec {
     public static Specification<Task> findByFather(){
-        return new Specification<Task>() {
-            @Override
-            public Predicate toPredicate(Root<Task> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                Path<String> exp1 = root.get("taskName");
-                Path<String> exp2 = root.get("fatherId");
-                query.distinct(true);
-                query.where(cb.like(exp1,"小目标"),cb.equal(exp2,"2"));
+        return (root, query, cb) -> {
+            Path<String> exp1 = root.get("taskName");
+            Path<String> exp2 = root.get("fatherId");
+            query.distinct(true);
+            query.where(cb.like(exp1,"小目标"),cb.equal(exp2,"2"));
 //                query.groupBy(exp1);
 //                query.having(cb.equal(cb.count(exp1),2));
-                //return null;
-               return cb.like(exp1,"aa");
-            }
+            //return null;
+           return cb.like(exp1,"aa");
         };
     }
     public static Specification<Task> findProject() {
-        return new Specification<Task>() {
-
-            @Override
-            public Predicate toPredicate(Root<Task> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                Join<Task, Project> join = root.join("project", JoinType.INNER);
-                Path<String> exp4 = join.get("projectName");
-                return cb.like(exp4, "%测试%");
-            }
+        return (root, query, cb) -> {
+            Join<Task, Project> join = root.join("project", JoinType.INNER);
+            Path<String> exp4 = join.get("projectName");
+            return cb.like(exp4, "%测试%");
         };
     }
 }

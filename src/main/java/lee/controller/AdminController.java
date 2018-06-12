@@ -7,6 +7,7 @@ import lee.service.CommentsService;
 import lee.service.MovieService;
 import lee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,13 +35,17 @@ public class AdminController {
     CommentsService commentsService;
     @Autowired
     MovieService movieService;
+    @Value("${size}")
+    private String pagesize;
     @RequestMapping(value = "/login",method = {RequestMethod.POST,RequestMethod.GET})
     public ModelAndView login(@Param("user") String user, @Param("password") String password, HttpServletRequest request){
         ReturnObject object = userService.login(new User(user,password));
         if (object.getCode().equals(Code.OK)){
             //登录时设置session
             request.getSession().setAttribute("user",user);
-            return new ModelAndView("/admin/index");
+            ModelAndView modelAndView = new ModelAndView("/admin/index");
+            modelAndView.addObject("pagesize",pagesize);
+            return modelAndView;
         }
         return new ModelAndView("/admin/login");
     }

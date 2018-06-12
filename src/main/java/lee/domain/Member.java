@@ -1,5 +1,8 @@
 package lee.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.Entity;
 
 /**
@@ -8,6 +11,7 @@ import javax.persistence.Entity;
  * @desc 会员
  */
 @Entity
+@JsonIgnoreProperties(value = "true")
 public class Member extends Domain {
     /**
      * email

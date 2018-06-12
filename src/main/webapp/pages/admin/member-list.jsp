@@ -44,7 +44,7 @@
       </div>
       <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('添加用户','/member-add.html',600,400)"><i class="layui-icon"></i>添加</button>
+        <button class="layui-btn" onclick="x_admin_show('添加用户','/iframe/member-add.html',600,400)"><i class="layui-icon"></i>添加</button>
         <span class="x-right" style="line-height:40px">共有数据：${count} 条</span>
       </xblock>
       <table class="layui-table">
@@ -61,7 +61,7 @@
             <th>操作</th></tr>
         </thead>
         <tbody>
-        <c:forEach var="member" items="${memebers}">
+        <c:forEach var="member" items="${members}">
           <tr>
             <td>
               <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
@@ -89,13 +89,13 @@
               </c:choose>
 
               </a>
-              <a title="编辑"  onclick="x_admin_show('编辑','/member/memberEdit?id='+${member.id},600,400)" href="javascript:;">
+              <a title="编辑"  onclick="x_admin_show('编辑','/member/memberEdit?id=${member.id}',600,400)" href="javascript:;">
                 <i class="layui-icon">&#xe642;</i>
               </a>
-              <a onclick="x_admin_show('修改密码','member-password.html',600,400)" title="修改密码" href="javascript:;">
+              <a onclick="x_admin_show('修改密码','/member/modPass?id=${member.id}',600,400)" title="修改密码" href="javascript:;">
                 <i class="layui-icon">&#xe631;</i>
               </a>
-              <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
+              <a title="删除" onclick="member_del(this,${member.id})" href="javascript:;">
                 <i class="layui-icon">&#xe640;</i>
               </a>
             </td>
@@ -105,17 +105,29 @@
       </table>
       <div class="page">
         <div>
-          <a class="prev" href="">&lt;&lt;</a>
-          <a class="current" href="">1</a>
-          <span class="num">2</span>
-          <a class="num" href="">3</a>
-          <a class="num" href="">489</a>
-          <a class="next" href="">&gt;&gt;</a>
+          <a class="prev" href="/member/memberList?page=${currPage-1==0?currPage:currPage-1}&size=${size}&sort=createdDate,desc">&lt;&lt;</a>
+          <c:forEach var="i" begin="${0}" end="${page.totalPages-1}">
+            <c:choose>
+              <c:when test="${i==currPage}">
+                <span class="current"  onclick="javascript:void (0)">${i+1}</span>
+              </c:when>
+              <c:when test="${i<10 || i==(page.totalPages-1)}">
+                <a class="num" href="/member/memberList?page=${i}&size=${size}&sort=createdDate,desc">${i+1}</a>
+              </c:when>
+            </c:choose>
+          </c:forEach>
+          <a class="next" href="/member/memberList?page=${currPage+1==page.totalPages?currPage:currPage+1}&size=${size}&sort=createdDate,desc">&gt;&gt;</a>
         </div>
       </div>
 
     </div>
     <script>
+      $(function () {
+          
+      })
+      function refresh(){
+          location.replace(location.href);
+      }
       layui.use('laydate', function(){
         var laydate = layui.laydate;
         
@@ -133,24 +145,28 @@
        /*用户-停用*/
       function member_stop(obj,id){
           layer.confirm('确认要更改状态吗？',function(index){
-              console.log(obj)
-              if($(obj).attr('title')=='启用'){
+              //console.log(obj)
+              $.post("/member/modStatus",{"id":id},function (res) {
+                  if (res.code=="OK"){
+                      if($(obj).attr('title')=='启用'){
+                          //发异步把用户状态进行更改
+                          $(obj).attr('title','停用')
+                          $(obj).find('i').html('&#xe62f;');
 
-                //发异步把用户状态进行更改
-                $(obj).attr('title','停用')
-                $(obj).find('i').html('&#xe62f;');
+                          $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('停用');
+                          layer.msg('已停用!',{icon: 5,time:1000});
 
-                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('停用');
-                layer.msg('已停用!',{icon: 5,time:1000});
+                      }else{
+                          $(obj).attr('title','启用')
+                          $(obj).find('i').html('&#xe601;');
 
-              }else{
-                $(obj).attr('title','启用')
-                $(obj).find('i').html('&#xe601;');
-
-                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('启用');
-                layer.msg('已启用!',{icon: 6,time:1000});
-              }
-              
+                          $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('启用');
+                          layer.msg('已启用!',{icon: 6,time:1000});
+                      }
+                  }else {
+                      layer.msg('修改失败',{icon: 5,time:1000});
+                  }
+              })
           });
       }
 
@@ -158,8 +174,14 @@
       function member_del(obj,id){
           layer.confirm('确认要删除吗？',function(index){
               //发异步删除数据
-              $(obj).parents("tr").remove();
-              layer.msg('已删除!',{icon:1,time:1000});
+              $.post("/member/delMember",{"id":id},function (res) {
+                  if (res.code=="OK"){
+                      $(obj).parents("tr").remove();
+                      layer.msg('已删除!',{icon:1,time:1000});
+                  } else {
+                      layer.msg('删除失败',{icon:2,time:1000})
+                  }
+              })
           });
       }
 
@@ -176,12 +198,6 @@
         });
       }
     </script>
-    <script>var _hmt = _hmt || []; (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();</script>
   </body>
 
 </html>

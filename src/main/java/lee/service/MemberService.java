@@ -3,9 +3,11 @@ package lee.service;
 import lee.domain.Member;
 import lee.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,19 +26,40 @@ public class MemberService {
      * @param pageable
      * @return
      */
-    public List<Member> members(Pageable pageable){
-        List<Member> list = memberRepository.findAll();
-        return list;
+    public Page<Member> members(Pageable pageable){
+        Page<Member> members = memberRepository.findAll(pageable);
+        return members;
     }
+
+    /**
+     * 统计会员数量
+     * @return 会员数量
+     */
     public Long countMembers(){
         return memberRepository.count();
     }
-    public boolean saveMember(Member member){
+
+    /**
+     * 保存会员信息
+     * @param member
+     * @return 会员信息
+     */
+    public Optional<Member> saveMember(Member member){
         Optional<Member> rem = Optional.ofNullable(memberRepository.save(member));
-        if (rem.isPresent()){
-            return true;
-        }else {
-            return false;
-        }
+        return rem;
+    }
+
+    /**
+     * 根据id找到会员
+     * @param Id
+     * @return
+     */
+    public Optional<Member> findMemberById(Long Id){
+        Optional<Member> optionalMember = Optional.ofNullable(memberRepository.findOne(Id));
+        return optionalMember;
+    }
+
+    public void delByid(Long id){
+        memberRepository.delete(id);
     }
 }

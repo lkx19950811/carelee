@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
   
@@ -11,7 +13,7 @@
     <link rel="stylesheet" href="/css/font.css">
     <link rel="stylesheet" href="/css/xadmin.css">
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="/js/xadmin.js"></script>
     <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
     <!--[if lt IE 9]>
@@ -21,35 +23,31 @@
   </head>
   
   <body>
-    <div class="x-body layui-anim layui-anim-up">
+    <div class="x-body">
         <form class="layui-form">
           <div class="layui-form-item">
-              <label for="L_email" class="layui-form-label">
-                  <span class="x-red">*</span>邮箱
+              <label for="L_username" class="layui-form-label">
+                  昵称
               </label>
               <div class="layui-input-inline">
-                  <input type="text" id="L_email" name="email" required="" lay-verify="email"
-                  autocomplete="off" class="layui-input">
-              </div>
-              <div class="layui-form-mid layui-word-aux">
-                  <span class="x-red">*</span>将会成为您唯一的登入名
+                  <input type="text" id="L_username" name="username" disabled="" value="${member.name}" class="layui-input">
               </div>
           </div>
           <div class="layui-form-item">
-              <label for="L_username" class="layui-form-label">
-                  <span class="x-red">*</span>昵称
+              <label for="L_repass" class="layui-form-label">
+                  <span class="x-red">*</span>旧密码
               </label>
               <div class="layui-input-inline">
-                  <input type="text" id="L_username" name="username" required="" lay-verify="nikename"
+                  <input type="password" id="repass" name="oldpass" required="" lay-verify="required"
                   autocomplete="off" class="layui-input">
               </div>
           </div>
           <div class="layui-form-item">
               <label for="L_pass" class="layui-form-label">
-                  <span class="x-red">*</span>密码
+                  <span class="x-red">*</span>新密码
               </label>
               <div class="layui-input-inline">
-                  <input type="password" id="L_pass" name="password" required="" lay-verify="pass"
+                  <input type="password" id="L_pass" name="newpass" required="" lay-verify="required"
                   autocomplete="off" class="layui-input">
               </div>
               <div class="layui-form-mid layui-word-aux">
@@ -61,15 +59,17 @@
                   <span class="x-red">*</span>确认密码
               </label>
               <div class="layui-input-inline">
-                  <input type="password" id="L_repass" name="repass" required="" lay-verify="repass"
+                  <input type="password" id="L_repass" name="repass" required="" lay-verify="required"
                   autocomplete="off" class="layui-input">
               </div>
+              <input type="hidden"  name="id" required="" lay-verify="required"
+                     autocomplete="off" class="layui-input" value="${member.id}">
           </div>
           <div class="layui-form-item">
               <label for="L_repass" class="layui-form-label">
               </label>
-              <button  class="layui-btn" lay-filter="add" lay-submit="">
-                  增加
+              <button  class="layui-btn" lay-filter="save" lay-submit="">
+                  修改
               </button>
           </div>
       </form>
@@ -77,45 +77,32 @@
     <script>
         layui.use(['form','layer'], function(){
             $ = layui.jquery;
-          var form = layui.form
-          ,layer = layui.layer;
-        
-          //自定义验证规则
-          form.verify({
-            nikename: function(value){
-              if(value.length < 5){
-                return '昵称至少得5个字符啊';
-              }
-            }
-            ,pass: [/(.+){6,12}$/, '密码必须6到12位']
-            ,repass: function(value){
-                if($('#L_pass').val()!=$('#L_repass').val()){
-                    return '两次密码不一致';
-                }
-            }
-          });
+            var form = layui.form
+            ,layer = layui.layer;
 
-          //监听提交
-          form.on('submit(add)', function(data){
-            console.log(data);
-            //发异步，把数据提交给php
-            $.post("/member/memberAdd",data.field,function (res) {
-                if (res.code=='OK') {
-                    layer.alert("增加成功", {icon: 6},function () {
-                        // 获得frame索引
-                        var index = parent.layer.getFrameIndex(window.name);
-                        //关闭当前frame
-                        parent.layer.close(index);
-                    });
-                }else {
-                    layer.alert("增加失败", {icon: 5})
+            form.on('submit(save)', function(data){
+                var info = data.field
+                if (info.newpass!=info.repass){
+                    layer.alert("两次密码必须一致", {icon: 5})
+                    return false;
                 }
+                $.post("/member/modifyPass",data.field,function (res) {
+                    if (res.code=='OK') {
+                        layer.alert(res.message, {icon: 6},function () {
+                            // 获得frame索引
+                            var index = parent.layer.getFrameIndex(window.name);
+                            //刷新父页面
+                            parent.window.refresh();
+                            //关闭当前frame
+                            parent.layer.close(index);
+                        });
+                    }else {
+                        $('#repass').val("")//充值旧密码
+                        layer.alert(res.message, {icon: 5})
+                    }
+                },"json");
+                return false;
             });
-
-            return false;
-          });
-          
-          
         });
     </script>
   </body>

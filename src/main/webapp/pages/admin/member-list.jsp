@@ -26,7 +26,7 @@
     <div class="x-nav">
       <span class="layui-breadcrumb">
         <a href="">首页</a>
-        <a href="">演示</a>
+        <a href="">上一页</a>
         <a>
           <cite>导航元素</cite></a>
       </span>

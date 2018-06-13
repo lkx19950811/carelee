@@ -194,49 +194,49 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="echarts1.html">
+                        <a _href="/echarts/1">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>拆线图</cite>
                         </a>
                     </li >
                     <li>
-                        <a _href="echarts2.html">
+                        <a _href="/echarts/2">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>柱状图</cite>
                         </a>
                     </li>
                     <li>
-                        <a _href="echarts3.html">
+                        <a _href="/echarts/3">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>地图</cite>
                         </a>
                     </li>
                     <li>
-                        <a _href="echarts4.html">
+                        <a _href="/echarts/4">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>饼图</cite>
                         </a>
                     </li>
                     <li>
-                        <a _href="echarts5.html">
+                        <a _href="/echarts/5">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>雷达图</cite>
                         </a>
                     </li>
                     <li>
-                        <a _href="echarts6.html">
+                        <a _href="/echarts/6">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>k线图</cite>
                         </a>
                     </li>
                     <li>
-                        <a _href="echarts7.html">
+                        <a _href="/echarts/7">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>热力图</cite>
                         </a>
                     </li>
                     <li>
-                        <a _href="echarts8.html">
+                        <a _href="/echarts/8">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>仪表图</cite>
                         </a>

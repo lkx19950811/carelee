@@ -27,7 +27,7 @@
                                     <ul class="layui-row layui-col-space10 layui-this">
                                         <li class="layui-col-xs2">
                                             <a href="javascript:;" class="x-admin-backlog-body">
-                                                <h3>文章数</h3>
+                                                <h3>心跳数</h3>
                                                 <p>
                                                     <cite>66</cite></p>
                                             </a>
@@ -48,7 +48,7 @@
                                         </li>
                                         <li class="layui-col-xs2">
                                             <a href="javascript:;" class="x-admin-backlog-body">
-                                                <h3>商品数</h3>
+                                                <h3>想法数</h3>
                                                 <p>
                                                     <cite>67</cite></p>
                                             </a>
@@ -104,7 +104,7 @@
                             <td>1.0.180420</td></tr>
                         <tr>
                             <th>服务器地址</th>
-                            <td>https://www.carelee.top</td></tr>
+                            <td>39.106.165.224</td></tr>
                         <tr>
                             <th>操作系统</th>
                             <td>linux</td></tr>

@@ -62,8 +62,17 @@ public class MemberService {
     public void delByid(Long id){
         memberRepository.delete(id);
     }
+
+    /**
+     * 根据 {ids}批量删除会员
+     * @param ids
+     * @return
+     */
     public int delByids(Long[] ids){
         List<Long> list = Arrays.asList(ids);
         return memberRepository.deleteByIds(list);
+    }
+    public Long countMember(){
+        return memberRepository.count();
     }
 }

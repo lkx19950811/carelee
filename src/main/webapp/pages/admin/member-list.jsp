@@ -103,27 +103,57 @@
         </c:forEach>
         </tbody>
       </table>
-      <div class="page">
-        <div>
-          <a class="prev" href="/member/memberList?page=${currPage-1==0?currPage:currPage-1}&size=${params.size}&sort=createdDate,desc&name=${params.name}&start=${params.start}&end=${params.end}">&lt;&lt;</a>
-          <c:forEach var="i" begin="${0}" end="${page.totalPages-1<0?0:page.totalPages}">
-            <c:choose>
-              <c:when test="${i==currPage}">
-                <span class="current"  onclick="javascript:void (0)">${i+1}</span>
-              </c:when>
-              <c:when test="${i<10 && i!=currPage && i==(page.totalPages-1)}">
-                <a class="num" href="/member/memberList?page=${i}&size=${params.size}&sort=createdDate,desc&name=${params.name}&start=${params.start}&end=${params.end}">${i+1}</a>
-              </c:when>
-            </c:choose>
-          </c:forEach>
-          <a class="next" href="/member/memberList?page=${currPage+1==page.totalPages?currPage:currPage+1}&size=${params.size}&sort=createdDate,desc&name=${params.name}&start=${params.start}&end=${params.end}">&gt;&gt;</a>
+        <!-- 其实分页可以用插件,layui自带的插件,我这里手工写了个分页-->
+    <%--<div class="page">--%>
+        <%--<div>--%>
+          <%--<c:if test="${(currPage)!=0}">--%>
+            <%--<a class="prev" href="/member/memberList?page=${currPage-1}&size=${params.size}&sort=createdDate,desc&name=${params.name}&start=${params.start}&end=${params.end}">&lt;&lt;</a>--%>
+          <%--</c:if>--%>
+          <%--<c:forEach var="i" begin="${0}" end="${page.totalPages-1<0?0:page.totalPages-1}">--%>
+            <%--<c:choose>--%>
+              <%--<c:when test="${i==currPage}">--%>
+                <%--<span class="current" >${i+1}</span>--%>
+              <%--</c:when>--%>
+              <%--<c:when test="${i<10 + currPage && i!=currPage}">--%>
+                <%--<a class="num" href="/member/memberList?page=${i}&size=${params.size}&sort=createdDate,desc&name=${params.name}&start=${params.start}&end=${params.end}">${i+1}</a>--%>
+              <%--</c:when>--%>
+              <%--<c:when test="${i!=currPage && i==comments.totalPages-1 && i-currPage>1}">--%>
+                <%--..........--%>
+                <%--<a class="num" href="/member/memberList?page=${i}&size=${params.size}&sort=createdDate,desc&name=${params.name}&start=${params.start}&end=${params.end}">${i+1}</a>--%>
+              <%--</c:when>--%>
+            <%--</c:choose>--%>
+          <%--</c:forEach>--%>
+          <%--<c:if test="${(currPage+1)!=page.totalPages}">--%>
+            <%--<a class="next" href="/member/memberList?page=${currPage+1}&size=${params.size}&sort=createdDate,desc&name=${params.name}&start=${params.start}&end=${params.end}">&gt;&gt;</a>--%>
+          <%--</c:if>--%>
+        <%--</div>--%>
+      <%--</div>--%>
+        <div id="page">
+            <%--分页--%>
         </div>
-      </div>
-
     </div>
     <script>
       $(function () {
-          
+          //分页
+      layui.use('laypage', function(){
+          var laypage = layui.laypage;
+          //执行一个laypage实例
+          laypage.render({
+              elem: 'page' //注意，这里的 page 是 ID，不用加 # 号
+              ,count: ${count} //数据总数，从服务端得到
+              ,limit:${params.size}//每页条数
+              ,curr:${currPage+1}//服务器返回的页数从0开始
+              ,layout:['prev', 'page', 'next','count','skip']//自定义模块
+              ,jump: function(obj, first){//点击跳转的回调函数
+                  //obj包含了当前分页的所有参数，比如：
+                  // console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。该页数从1开始
+                  // console.log(obj.limit); //得到每页显示的条数
+                  //首次不执行
+                  if(!first){
+                      location.href = '/member/memberList?page='+ (obj.curr-1) + '&size=${params.size}&sort=createdDate,desc&name=${params.name}&start=${params.start}&end=${params.end}'
+                  }
+              }});
+          });
       })
       function refresh(){
           location.replace(location.href);

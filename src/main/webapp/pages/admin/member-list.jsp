@@ -85,10 +85,9 @@
             <td class="td-manage">
               <a onclick="member_stop(this,${member.id})" href="javascript:;"  title="停用">
                 <i class="layui-icon">&#xe62f;</i>
-                </c:when>
-              </c:choose>
-
               </a>
+            </c:when>
+              </c:choose>
               <a title="编辑"  onclick="x_admin_show('编辑','/member/memberEdit?id=${member.id}',600,400)" href="javascript:;">
                 <i class="layui-icon">&#xe642;</i>
               </a>
@@ -204,10 +203,10 @@
       function member_del(obj,id){
           layer.confirm('确认要删除吗？删除的用户可以在回收站找回',function(index){
               //发异步删除数据
-              $.post("/member/delMember",{"id":id},function (res) {
+              $.post("/member/putRec",{"ids":id},function (res) {
                   if (res.code=="OK"){
                       $(obj).parents("tr").remove();
-                      layer.msg('已删除!',{icon:1,time:1000});
+                      layer.msg('已放入回收站!',{icon:1,time:1000});
                   } else {
                       layer.msg('删除失败',{icon:2,time:1000})
                   }
@@ -222,14 +221,14 @@
         console.log(data)
         layer.confirm('确认要删除吗？删除的用户可以在回收站找回',function(index){
             //捉到所有被选中的，发异步进行删除
-            $.post("/member/delMembers",{ids:data},function (res) {
+            $.post("/member/putRec",{"ids":data},function (res) {
                 if (res.code=="OK"){
                   layer.msg(res.message, {icon: 1});
                   $(".layui-form-checked").not('.header').parents('tr').remove();
                 }else {
                   layer.msg(res.message, {icon: 1});
                 }
-            })
+            },"json")
 
         });
       }

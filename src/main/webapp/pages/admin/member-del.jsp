@@ -44,73 +44,45 @@
       </div>
       <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量恢复</button>
-        <span class="x-right" style="line-height:40px">共有数据：88 条</span>
+        <span class="x-right" style="line-height:40px">共有数据：${count} 条</span>
       </xblock>
       <table class="layui-table">
         <thead>
-          <tr>
-            <th>
-              <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
-            </th>
-            <th>ID</th>
-            <th>用户名</th>
-            <th>性别</th>
-            <th>手机</th>
-            <th>邮箱</th>
-            <th>地址</th>
-            <th>加入时间</th>
-            <th>状态</th>
-            <th>操作</th></tr>
+        <tr>
+          <th>
+            <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
+          </th>
+          <th>ID</th>
+          <th>用户名</th>
+          <th>邮箱</th>
+          <th>加入时间</th>
+          <th>状态</th>
+          <th>操作</th></tr>
         </thead>
         <tbody>
+        <c:forEach var="member" items="${members}">
           <tr>
             <td>
-              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
+              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${member.id}'><i class="layui-icon">&#xe605;</i></div>
             </td>
-            <td>1</td>
-            <td>小明</td>
-            <td>男</td>
-            <td>13000000000</td>
-            <td>admin@mail.com</td>
-            <td>北京市 海淀区</td>
-            <td>2017-01-01 11:11:42</td>
+            <td>${member.id}</td>
+            <td>${member.name}</td>
+            <td>${member.email}</td>
+            <td>${member.createdDate}</td>
             <td class="td-status">
               <span class="layui-btn layui-btn-danger layui-btn-mini">
                                 已删除
-                            </span>
+              </span></td>
             <td class="td-manage">
-              <a title="恢复" onclick="member_del(this,'要删除的id')" href="javascript:;">
+              <a title="恢复" onclick="member_rec(this,${member.id})" href="javascript:;">
                 <i class="layui-icon">&#xe618;</i>
               </a>
-              <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
+              <a title="删除" onclick="member_del(this,${member.id})" href="javascript:;">
                 <i class="layui-icon">&#xe640;</i>
               </a>
             </td>
           </tr>
-          <tr>
-            <td>
-              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
-            </td>
-            <td>1</td>
-            <td>小明</td>
-            <td>男</td>
-            <td>13000000000</td>
-            <td>admin@mail.com</td>
-            <td>北京市 海淀区</td>
-            <td>2017-01-01 11:11:42</td>
-            <td class="td-status">
-              <span class="layui-btn layui-btn-danger layui-btn-mini">
-                                已删除
-                            </span>
-            <td class="td-manage">
-              <a title="恢复" onclick="member_del(this,'要删除的id')" href="javascript:;">
-                <i class="layui-icon">&#xe618;</i>
-              </a>
-              <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
-                <i class="layui-icon">&#xe640;</i>
-              </a>
-            </td>
-          </tr>
+        </c:forEach>
         </tbody>
       </table>
       <div class="page">
@@ -140,7 +112,7 @@
         });
       });
 
-
+      //TODO 还没做完
       /*用户-删除*/
       function member_del(obj,id){
           layer.confirm('确认要删除吗？',function(index){
@@ -149,7 +121,14 @@
               layer.msg('已删除!',{icon:1,time:1000});
           });
       }
-
+      /*用户恢复*/
+      function member_rec(obj,id){
+          layer.confirm('确认要恢复吗？',function(index){
+              //发异步删除数据
+              $(obj).parents("tr").remove();
+              layer.msg('已恢复!',{icon:1,time:1000});
+          });
+      }
 
 
       function delAll (argument) {

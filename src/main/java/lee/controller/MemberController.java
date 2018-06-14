@@ -3,7 +3,9 @@ package lee.controller;
 import lee.common.Code;
 import lee.common.ReturnObject;
 import lee.domain.Member;
+import lee.domain.Recycle;
 import lee.domain.spec.MemberSpec;
+import lee.repository.RecycleRepository;
 import lee.service.MemberService;
 import lee.utils.MD5Utils;
 import org.slf4j.Logger;
@@ -22,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -36,25 +39,39 @@ public class MemberController {
     private Logger Logger = LoggerFactory.getLogger(getClass());
     @Autowired
     MemberService memberService;
+    @Autowired
+    RecycleRepository recycleRepository;
+
     /**
-     * 会员列表页面
+     *
+     * @param request
+     * @param pageable page,size,sort
+     * @param start 起始日期 yyyy-MM-dd
+     * @param end 结束日期 yyyy-MM-dd
+     * @param name 用户名
+     * @param rec 回收站标识
      * @return
+     * @throws Exception
      */
     @RequestMapping("memberList")
-    public ModelAndView memberList(HttpServletRequest request, Pageable pageable,@RequestParam(required = false) String start,@RequestParam(required = false) String end,@RequestParam(required = false) String name ) throws Exception {
+    public ModelAndView memberList(HttpServletRequest request, Pageable pageable, @RequestParam(required = false) String start, @RequestParam(required = false) String end, @RequestParam(required = false) String name,
+                                   @RequestParam(required = false) String rec) throws Exception {
         Page<Member> members = null;
-        if (!StringUtils.isEmpty(start) || !StringUtils.isEmpty(end) || !StringUtils.isEmpty(name)){
-            Specification<Member> specification = MemberSpec.findMembers(start,end,name);
-            members = memberService.members(specification,pageable);
-        }else {
-            members = memberService.members(pageable);
-        }
+        List<String> ids = recycleRepository.memberIds();
+        Specification<Member> specification = MemberSpec.findMembers(start,end,name,ids,rec);
+        members = memberService.members(specification,pageable);
         Map<String,Object> params= new HashMap<>();
         params.put("start",start);
         params.put("end",end);
         params.put("name",name);
         params.put("size",pageable.getPageSize());
-        ModelAndView modelAndView = new ModelAndView("/admin/member-list");
+        String viewName;
+        if (StringUtils.isEmpty(rec)){
+            viewName = "/admin/member-list";
+        }else {
+            viewName = "/admin/member-del";
+        }
+        ModelAndView modelAndView = new ModelAndView(viewName);
         modelAndView.addObject("members",members.getContent());
         modelAndView.addObject("count",members.getTotalElements());
         modelAndView.addObject("currPage",pageable.getPageNumber());
@@ -62,7 +79,6 @@ public class MemberController {
         modelAndView.addObject("params",params);
         return modelAndView;
     }
-
     /**
      * 会员增加/修改接口
      * @return
@@ -175,6 +191,19 @@ public class MemberController {
     }
 
     /**
+     * 将会员放入回收站
+     * @return
+     */
+    @RequestMapping("putRec")
+    public ReturnObject putInRec(@RequestParam(value = "ids[]") String ...ids ){
+        List<Recycle> recycles = memberService.putRec(ids);
+        if (recycles.size()==0){
+            return ReturnObject.re(Code.FAIL,"保存失败");
+
+        }
+        return ReturnObject.re(Code.OK,"放入回收站成功",recycles);
+    }
+    /**
      * 删除单个会员
      * @param id
      * @return
@@ -198,10 +227,5 @@ public class MemberController {
         }else {
             return ReturnObject.re(Code.FAIL,"批量删除失败");
         }
-    }
-    @RequestMapping("delView")
-    public ModelAndView delView(){
-        ModelAndView modelAndView = new ModelAndView("/admin/member-del");
-        return modelAndView;
     }
 }

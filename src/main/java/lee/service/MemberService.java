@@ -1,13 +1,16 @@
 package lee.service;
 
 import lee.domain.Member;
+import lee.domain.Recycle;
 import lee.repository.MemberRepository;
+import lee.repository.RecycleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +24,8 @@ import java.util.Optional;
 public class MemberService {
     @Autowired
     MemberRepository memberRepository;
-
+    @Autowired
+    RecycleRepository recycleRepository;
     /**
      * 分页查询 member
      * @param pageable
@@ -75,5 +79,14 @@ public class MemberService {
     public Long countMember(){
         return memberRepository.count();
     }
-    //TODO 找出放入回收站的Member
+
+    public List<Recycle> putRec(String ...ids){
+        List<Recycle> recycles = new ArrayList<>();
+        for (String id: ids ){
+            Recycle recycle = new Recycle();
+            recycle.setMemberId(id);
+            recycles.add(recycle);
+        }
+        return recycleRepository.save(recycles);
+    }
 }

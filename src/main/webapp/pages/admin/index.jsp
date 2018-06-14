@@ -68,7 +68,7 @@
                         </a>
                     </li >
                     <li>
-                        <a _href="/member/delView">
+                        <a _href="/member/memberList?size=${pagesize}&sort=createdDate,desc&rec=yes"><!--rec回收站标志-->
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>会员回收站</cite>
                             

@@ -1,5 +1,6 @@
 package lee.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 /**
@@ -9,31 +10,32 @@ import javax.persistence.Entity;
  */
 @Entity
 public class Recycle extends Domain{
-    private String classType;
-    private String status;
-    private String delId;
+    @Column(name = "memberId")
+    private String memberId;
+    @Column(name = "commentId")
+    private String comment;
 
-    public String getClassType() {
-        return classType;
+    public String getMemberId() {
+        return memberId;
     }
 
-    public void setClassType(String classType) {
-        this.classType = classType;
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
     }
 
-    public String getStatus() {
-        return status;
+    public String getComment() {
+        return comment;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
-    public String getDelId() {
-        return delId;
-    }
-
-    public void setDelId(String delId) {
-        this.delId = delId;
+    @Override
+    public String toString() {
+        return "Recycle{" +
+                "memberId='" + memberId + '\'' +
+                ", comment='" + comment + '\'' +
+                '}';
     }
 }

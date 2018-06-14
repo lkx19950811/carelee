@@ -1,5 +1,7 @@
 package lee.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 /**
@@ -10,6 +12,7 @@ import javax.persistence.*;
  * @create 2017-12-26 下午 9:45
  */
 @Entity(name = "comments")
+@JsonIgnoreProperties(value = {"comments"})
 public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,7 +51,6 @@ public class Comments {
      */
     @Column(name = "recordId")
     private String recordId;
-
     public Long getCommentId() {
         return commentId;
     }
@@ -104,4 +106,5 @@ public class Comments {
     public void setRecordId(String recordId) {
         this.recordId = recordId;
     }
+
 }

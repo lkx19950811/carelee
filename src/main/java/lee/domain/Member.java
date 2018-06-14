@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
 
 /**
  * @author leon
@@ -11,7 +13,7 @@ import javax.persistence.Entity;
  * @desc 会员
  */
 @Entity
-@JsonIgnoreProperties(value = "true")
+@JsonIgnoreProperties(value = {"member"})
 public class Member extends Domain {
     /**
      * email
@@ -61,5 +63,15 @@ public class Member extends Domain {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", status='" + status + '\'' +
+                '}';
     }
 }

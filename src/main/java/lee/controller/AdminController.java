@@ -44,6 +44,7 @@ public class AdminController {
             //登录时设置session
             request.getSession().setAttribute("user",user);
             ModelAndView modelAndView = new ModelAndView("/admin/index");
+            modelAndView.addObject("user",(User)object.getObject());
             modelAndView.addObject("pagesize",pagesize);
             return modelAndView;
         }

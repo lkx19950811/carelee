@@ -34,7 +34,7 @@ public class UserService {
         Optional<User> optionalUser = Optional.ofNullable(userRepository.findByEmail(user.getEmail()));
         if (optionalUser.isPresent()){
             if (MD5Utils.verify(user.getPassWord(),optionalUser.get().getPassWord())){
-                return ReturnObject.re(Code.OK,"登录成功",null);
+                return ReturnObject.re(Code.OK,"登录成功",optionalUser.get());
             }else {
                 return ReturnObject.re(Code.FAIL,"密码错误",null);
             }

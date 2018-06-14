@@ -75,4 +75,5 @@ public class MemberService {
     public Long countMember(){
         return memberRepository.count();
     }
+    //TODO 找出放入回收站的Member
 }

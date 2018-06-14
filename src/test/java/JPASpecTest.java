@@ -2,6 +2,7 @@ import lee.domain.Project;
 import lee.domain.Task;
 import lee.domain.spec.TaskSpec;
 import lee.repository.CommentRepository;
+import lee.repository.MemberRepository;
 import lee.repository.ProjectRepository;
 import lee.repository.TaskRepository;
 import org.junit.Test;
@@ -24,6 +25,8 @@ public class JPASpecTest extends TestBasic {
     Project project;
     @Autowired
     CommentRepository commentRepository;
+    @Autowired
+    MemberRepository memberRepository;
     @Test
     public void test (){
         List<Task> list = taskRepository.findAll(TaskSpec.findByFather());
@@ -57,4 +60,9 @@ public class JPASpecTest extends TestBasic {
     public void test5(){
         System.out.println(commentRepository.count());
     }
+    @Test
+    public void test6(){
+//        System.out.println(memberRepository.findUndelMember());
+    }
+
 }

@@ -95,7 +95,7 @@
             </c:choose>
             <td>${commnet.commentVote}</td>
             <td class="td-manage">
-              <a title="查看"  onclick="x_admin_show('编辑','order-view.html')" href="javascript:;">
+              <a title="查看"  onclick="x_admin_show('查看','order-view.html')" href="javascript:;">
                 <i class="layui-icon">&#xe63c;</i>
               </a>
               <a title="删除" onclick="member_del(this,${commnet.commentId})" href="javascript:;">

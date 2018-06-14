@@ -202,7 +202,7 @@
 
       /*用户-删除*/
       function member_del(obj,id){
-          layer.confirm('确认要删除吗？',function(index){
+          layer.confirm('确认要删除吗？删除的用户可以在回收站找回',function(index){
               //发异步删除数据
               $.post("/member/delMember",{"id":id},function (res) {
                   if (res.code=="OK"){
@@ -220,7 +220,7 @@
       function delAll (argument) {
         var data = tableCheck.getData();
         console.log(data)
-        layer.confirm('确认要删除吗？',function(index){
+        layer.confirm('确认要删除吗？删除的用户可以在回收站找回',function(index){
             //捉到所有被选中的，发异步进行删除
             $.post("/member/delMembers",{ids:data},function (res) {
                 if (res.code=="OK"){

@@ -199,4 +199,9 @@ public class MemberController {
             return ReturnObject.re(Code.FAIL,"批量删除失败");
         }
     }
+    @RequestMapping("delView")
+    public ModelAndView delView(){
+        ModelAndView modelAndView = new ModelAndView("/admin/member-del");
+        return modelAndView;
+    }
 }

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * @author leon
@@ -28,16 +29,15 @@ public class CommentController {
     @Autowired
     CommentsService commentsService;
     @RequestMapping("list")
-    public ModelAndView comments(HttpServletRequest request, Pageable pageable, @RequestParam(required = false) String start,@RequestParam(required = false) String end,@RequestParam(required = false) String movieName){
-        Page<Comments> comments = commentsService.comments(pageable);
+    public ModelAndView comments(HttpServletRequest request, Pageable pageable, @RequestParam(required = false) String movieName,
+                                 @RequestParam(required = false)String rec){
+        Page<Comments> comments = commentsService.comments(pageable,movieName,rec);
         Map params = new HashMap();
         String sort = pageable.getSort().toString();
         sort = sort.split(":")[0] + "," + sort.split(":")[1].trim().toLowerCase();
         params.put("sort",sort);
         params.put("size",pageable.getPageSize());
         params.put("movieName",movieName);
-        params.put("start",start);
-        params.put("end",end);
         ModelAndView modelAndView = new ModelAndView("/admin/comment-list");
         modelAndView.addObject("comments",comments);
         modelAndView.addObject("currPage",pageable.getPageNumber());

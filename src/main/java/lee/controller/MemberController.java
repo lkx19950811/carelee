@@ -53,7 +53,7 @@ public class MemberController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("memberList")
+    @RequestMapping(value = "memberList",method = {RequestMethod.POST,RequestMethod.GET})
     public ModelAndView memberList(HttpServletRequest request, Pageable pageable, @RequestParam(required = false) String start, @RequestParam(required = false) String end, @RequestParam(required = false) String name,
                                    @RequestParam(required = false) String rec) throws Exception {
         Page<Member> members = null;
@@ -226,6 +226,21 @@ public class MemberController {
             return ReturnObject.re(Code.OK,"批量删除成功");
         }else {
             return ReturnObject.re(Code.FAIL,"批量删除失败");
+        }
+    }
+
+    /**
+     * 恢复会员接口
+     * @param ids
+     * @return
+     */
+    @RequestMapping("recoveryMembers")
+    public ReturnObject recoveryMem(@RequestParam("ids[]")String[] ids){
+        int result = recycleRepository.deleteByIds(ids);
+        if (result>0){
+            return ReturnObject.re(Code.OK,"恢复成功!",result);
+        }else{
+            return ReturnObject.re(Code.FAIL,"恢复失败!");
         }
     }
 }

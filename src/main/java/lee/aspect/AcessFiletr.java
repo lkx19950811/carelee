@@ -33,8 +33,6 @@ public class AcessFiletr implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session = request.getSession();
-        String userName = (String) session.getAttribute("user");
-        String uri = request.getRequestURI();
 
         // 除了登录页面以外的页面和登录action以外，检查登录情况，未登录的需要重定向并且不通过过滤
 //        if (uri.indexOf("admin/login") == -1 && uri.indexOf("login.jsp") == -1 && !uri.equals("/")) {

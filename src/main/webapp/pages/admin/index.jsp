@@ -37,7 +37,7 @@
         </ul>
         <ul class="layui-nav right" lay-filter="">
           <li class="layui-nav-item">
-            <a href="javascript:;">${user.userName}</a>
+            <a href="javascript:;">${user.email}</a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
               <dd><a onclick="x_admin_show('个人信息','http://www.baidu.com')">个人信息</a></dd>
               <dd><a href="/admin/login">退出</a></dd>
@@ -84,7 +84,7 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="/comment/list?size=${pagesize}&sort=commentId,asc">
+                        <a _href="/comment/list?size=${pagesize}&sort=commentId,desc">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>评论列表</cite>
                         </a>

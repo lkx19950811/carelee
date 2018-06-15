@@ -36,13 +36,11 @@
     <div class="x-body">
       <div class="layui-row">
         <form class="layui-form layui-col-md12 x-so">
-          <input class="layui-input" placeholder="开始日" name="start" id="start">
-          <input class="layui-input" placeholder="截止日" name="end" id="end">
           <div class="layui-input-inline">
             <select name="sortType">
               <option value="">排序方式</option>
-              <option value="id">按ID</option>
-              <option value="vote">点赞数</option>
+              <option value="commentId">按ID</option>
+              <option value="commentVote">点赞数</option>
             </select>
           </div>
           <div class="layui-input-inline">
@@ -52,7 +50,7 @@
               <option value="desc">降序</option>
             </select>
           </div>
-          <input type="text" name="moiveName"  placeholder="请输入电影名" autocomplete="off" class="layui-input">
+          <input type="text" name="movieName"  placeholder="请输入电影名" autocomplete="off" class="layui-input">
           <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
       </div>
@@ -87,7 +85,7 @@
             <td>${commnet.commentForMovie}</td>
             <c:choose>
               <c:when test="${commnet.commentInfo.length()>40}">
-                <td>${commnet.commentInfo.substring(0,40)}...........</td>
+                <td title="${commnet.commentInfo}">${commnet.commentInfo.substring(0,40)}...........</td>
               </c:when>
               <c:otherwise>
                 <td>${commnet.commentInfo}</td>
@@ -95,7 +93,7 @@
             </c:choose>
             <td>${commnet.commentVote}</td>
             <td class="td-manage">
-              <a title="查看"  onclick="x_admin_show('查看','order-view.html')" href="javascript:;">
+              <a title="查看"  onclick="x_admin_show('查看','https://www.baidu.com/s?wd=${commnet.commentForMovie}')" href="javascript:;">
                 <i class="layui-icon">&#xe63c;</i>
               </a>
               <a title="删除" onclick="member_del(this,${commnet.commentId})" href="javascript:;">
@@ -133,7 +131,42 @@
 
     </div>
     <script>
-      //分页
+        layui.use(['form','layer'], function(){
+            $ = layui.jquery;
+            var form = layui.form
+            // //自定义验证规则
+            // form.verify({
+            //     nikename: function(value){
+            //         if(value.length < 5){
+            //             return '昵称至少得5个字符啊';
+            //         }
+            //     }
+            //     ,pass: [/(.+){6,12}$/, '密码必须6到12位']
+            //     ,repass: function(value){
+            //         if($('#L_pass').val()!=$('#L_repass').val()){
+            //             return '两次密码不一致';
+            //         }
+            //     }
+            // });
+
+            //监听提交
+            form.on('submit(sreach)', function(data){
+                //发异步，把数据提交给php
+                var param = data.field
+                param.sort = "commentId"
+                if (param.sortType){
+                    param.sort = param.sortType
+                }else if (param.order){
+                    param.sort = data.field.sort + ',' + param.order
+                }else {
+                    param.sort = param.sort + ',desc'
+                }
+                console.log(param)
+                location.href = '/comment/list?sort=' + param.sort  +'&movieName=' + param.movieName + '&rec=' + '&size=${params.size}'
+                return false;//如果不加false,就提交表单了
+            });
+        });
+    /*分页*/
     layui.use('laypage', function(){
         var laypage = layui.laypage;
         //执行一个laypage实例
@@ -153,7 +186,8 @@
                 }
 
             }});
-            })
+        })
+
       layui.use('laydate', function(){
         var laydate = layui.laydate;
         
@@ -167,30 +201,6 @@
           elem: '#end' //指定元素
         });
       });
-
-       /*用户-停用*/
-      function member_stop(obj,id){
-          layer.confirm('确认要停用吗？',function(index){
-
-              if($(obj).attr('title')=='启用'){
-
-                //发异步把用户状态进行更改
-                $(obj).attr('title','停用')
-                $(obj).find('i').html('&#xe62f;');
-
-                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                layer.msg('已停用!',{icon: 5,time:1000});
-
-              }else{
-                $(obj).attr('title','启用')
-                $(obj).find('i').html('&#xe601;');
-
-                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
-                layer.msg('已启用!',{icon: 5,time:1000});
-              }
-              
-          });
-      }
 
       /*用户-删除*/
       function member_del(obj,id){

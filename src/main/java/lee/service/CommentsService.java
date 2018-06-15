@@ -2,10 +2,13 @@ package lee.service;
 
 import lee.domain.Comments;
 import lee.domain.Member;
+import lee.domain.spec.CommentSpec;
 import lee.repository.CommentRepository;
+import lee.repository.RecycleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +22,8 @@ import java.util.List;
 public class CommentsService {
     @Autowired
     CommentRepository commentRepository;
-
+    @Autowired
+    RecycleRepository recycleRepository;
     /**
      * 评论计数
      * @return
@@ -33,8 +37,10 @@ public class CommentsService {
      * @param pageable
      * @return
      */
-    public Page<Comments> comments(Pageable pageable){
-        Page<Comments> comments = commentRepository.findAll(pageable);
+    public Page<Comments> comments(Pageable pageable,String movieName,String rec){
+        List<String> ids = recycleRepository.commentIds();
+        Specification<Comments> specification = CommentSpec.findComments(movieName,ids,rec);
+        Page<Comments> comments = commentRepository.findAll(specification,pageable);
         return comments;
     }
 

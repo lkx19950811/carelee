@@ -48,7 +48,7 @@ public class AdminController {
         ReturnObject object = userService.login(new User(user,password));
         if (object.getCode().equals(Code.OK)){
             //登录时设置session
-            request.getSession().setAttribute("user",user);
+            request.getSession().setAttribute("user",object.getObject());
             ModelAndView modelAndView = new ModelAndView("/admin/index");
             modelAndView.addObject("user",(User)object.getObject());
             modelAndView.addObject("pagesize",pagesize);
@@ -66,14 +66,16 @@ public class AdminController {
         return userService.addUser(u);
     }
     @RequestMapping("welcome")
-    public ModelAndView welcome(){
+    public ModelAndView welcome(HttpServletRequest request){
         Long countComment = commentsService.CountComment();//评论计数
         Long countMovie = movieService.countMovie();
         Long countUser = memberService.countMember();
+        User user =  (User) request.getSession().getAttribute("user");
         ModelAndView modelAndView = new ModelAndView("/admin/welcome");
         modelAndView.addObject("countComment",countComment);
         modelAndView.addObject("countMovie",countMovie);
         modelAndView.addObject("countUser",countUser);
+        modelAndView.addObject("user",user);
         return modelAndView;
     }
     @RequestMapping("adminList")

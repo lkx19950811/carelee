@@ -35,7 +35,7 @@
     </div>
     <div class="x-body">
       <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so" action="/member/memberList?page=0&size=${params.size}&sort=createdDate,desc">
+        <form method="post" class="layui-form layui-col-md12 x-so" action="/member/memberList?page=0&size=${params.size}&sort=createdDate,desc">
           <input class="layui-input" placeholder="开始日" name="start" id="start" value="${params.start}">
           <input class="layui-input" placeholder="截止日" name="end" id="end" value="${params.end}">
           <input type="text" name="name"  placeholder="请输入用户名" autocomplete="off" class="layui-input" value="${params.name}">
@@ -203,7 +203,7 @@
       function member_del(obj,id){
           layer.confirm('确认要删除吗？删除的用户可以在回收站找回',function(index){
               //发异步删除数据
-              $.post("/member/putRec",{"ids":id},function (res) {
+              $.post("/member/putRec",{"ids":[id]},function (res) {
                   if (res.code=="OK"){
                       $(obj).parents("tr").remove();
                       layer.msg('已放入回收站!',{icon:1,time:1000});
@@ -216,12 +216,12 @@
 
 
 
-      function delAll (argument) {
+      function delAll () {
         var data = tableCheck.getData();
         console.log(data)
         layer.confirm('确认要删除吗？删除的用户可以在回收站找回',function(index){
             //捉到所有被选中的，发异步进行删除
-            $.post("/member/putRec",{"ids":data},function (res) {
+            $.post("/member/delMembers",{"ids":data},function (res) {
                 if (res.code=="OK"){
                   layer.msg(res.message, {icon: 1});
                   $(".layui-form-checked").not('.header').parents('tr').remove();

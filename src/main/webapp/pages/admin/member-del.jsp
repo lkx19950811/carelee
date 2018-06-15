@@ -35,10 +35,10 @@
     </div>
     <div class="x-body">
       <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so">
-          <input class="layui-input" placeholder="开始日" name="start" id="start">
-          <input class="layui-input" placeholder="截止日" name="end" id="end">
-          <input type="text" name="username"  placeholder="请输入用户名" autocomplete="off" class="layui-input">
+        <form method="post" class="layui-form layui-col-md12 x-so" action="/member/memberList?page=0&size=${params.size}&sort=createdDate,desc&rec=yes">
+          <input class="layui-input" placeholder="开始日" name="start" id="start" value="${param.start}">
+          <input class="layui-input" placeholder="截止日" name="end" id="end" value="${param.end}">
+          <input type="text" name="name"  placeholder="请输入用户名" autocomplete="off" class="layui-input" value="${param.name}">
           <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
       </div>
@@ -85,19 +85,31 @@
         </c:forEach>
         </tbody>
       </table>
-      <div class="page">
-        <div>
-          <a class="prev" href="">&lt;&lt;</a>
-          <a class="num" href="">1</a>
-          <span class="current">2</span>
-          <a class="num" href="">3</a>
-          <a class="num" href="">489</a>
-          <a class="next" href="">&gt;&gt;</a>
-        </div>
+      <div id="page">
+
       </div>
 
     </div>
     <script>
+        layui.use('laypage', function(){
+            var laypage = layui.laypage;
+            //执行一个laypage实例
+            laypage.render({
+                elem: 'page' //注意，这里的 page 是 ID，不用加 # 号
+                ,count: ${count} //数据总数，从服务端得到
+                ,limit:${params.size}//每页条数
+                ,curr:${currPage+1}//服务器返回的页数从0开始
+                ,layout:['prev', 'page', 'next','count','skip']//自定义模块
+                ,jump: function(obj, first){//点击跳转的回调函数
+                    //obj包含了当前分页的所有参数，比如：
+                    // console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。该页数从1开始
+                    // console.log(obj.limit); //得到每页显示的条数
+                    //首次不执行
+                    if(!first){
+                        location.href = '/member/memberList?page='+ (obj.curr-1) + '&size=${params.size}&sort=createdDate,desc&rec=yes&start=${params.start}&end=${params.end}'
+                    }
+                }});
+        });
       layui.use('laydate', function(){
         var laydate = layui.laydate;
         
@@ -112,21 +124,31 @@
         });
       });
 
-      //TODO 还没做完
       /*用户-删除*/
       function member_del(obj,id){
-          layer.confirm('确认要删除吗？',function(index){
-              //发异步删除数据
-              $(obj).parents("tr").remove();
-              layer.msg('已删除!',{icon:1,time:1000});
+          layer.confirm('确认要彻底删除吗？',function(index){
+              $.post("/member/delMember",{"id":id},function (res) {
+                  if (res.code=='OK'){
+                      $(obj).parents("tr").remove();
+                      layer.msg('已删除!',{icon:1,time:1000});
+                  }else {
+                      layer.msg('删除失败!',{icon:2,time:1000});
+                  }
+              })
           });
       }
       /*用户恢复*/
       function member_rec(obj,id){
           layer.confirm('确认要恢复吗？',function(index){
               //发异步删除数据
-              $(obj).parents("tr").remove();
-              layer.msg('已恢复!',{icon:1,time:1000});
+              $.post("/member/recoveryMembers",{"ids":[id]},function (res) {
+                  if (res.code=='OK'){
+                      $(obj).parents("tr").remove();
+                      layer.msg('已恢复!',{icon:1,time:1000});
+                  }else {
+                      layer.msg('恢复失败!',{icon:2,time:1000});
+                  }
+              })
           });
       }
 
@@ -137,8 +159,14 @@
   
         layer.confirm('确认要恢复吗？'+data,function(index){
             //捉到所有被选中的，发异步进行删除
-            layer.msg('恢复成功', {icon: 1});
-            $(".layui-form-checked").not('.header').parents('tr').remove();
+            $.post("/member/recoveryMembers",{"ids":data},function (res) {
+                if (res.code=='OK'){
+                    layer.msg('恢复成功!恢复条数: ' + res.object, {icon: 1});
+                    $(".layui-form-checked").not('.header').parents('tr').remove();
+                }else {
+                    layer.msg('恢复失败', {icon: 2});
+                }
+            })
         });
       }
     </script>

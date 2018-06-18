@@ -1,8 +1,6 @@
 package lee.domain.spec;
 
 import lee.domain.Comments;
-import lee.domain.Member;
-import lee.utils.DateTimeUtils;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
@@ -41,7 +39,7 @@ public class CommentSpec {
             }
             if (!StringUtils.isEmpty(movieName)){//名字不为空则模糊查询名字
                 String exc = "%" + movieName + "%";
-                list.add(cb.like(root.get("name"),exc));
+                list.add(cb.like(root.get("commentForMovie"),exc));
             }
             return cb.and(list.toArray(new Predicate[list.size()]));//将list中的条件转为数组
         };

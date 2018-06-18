@@ -1,10 +1,10 @@
 package lee.controller;
 
-import com.sun.org.apache.bcel.internal.generic.MONITORENTER;
+import lee.common.Code;
+import lee.common.ReturnObject;
 import lee.domain.Comments;
 import lee.service.CommentsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,9 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 /**
  * @author leon
@@ -43,5 +41,16 @@ public class CommentController {
         modelAndView.addObject("currPage",pageable.getPageNumber());
         modelAndView.addObject("params",params);
         return modelAndView;
+    }
+
+    /**
+     * 删除单条评论
+     * @param id
+     * @return
+     */
+    @RequestMapping("delComment")
+    public ReturnObject delComment(Long id){
+        commentsService.delComment(id);
+        return ReturnObject.re(Code.OK,"删除成功");
     }
 }

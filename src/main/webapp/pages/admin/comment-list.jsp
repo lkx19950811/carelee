@@ -50,13 +50,13 @@
               <option value="desc">降序</option>
             </select>
           </div>
-          <input type="text" name="movieName"  placeholder="请输入电影名" autocomplete="off" class="layui-input">
+          <input type="text" name="movieName"  placeholder="请输入电影名" autocomplete="off" class="layui-input" value="${params.movieName}">
           <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
       </div>
       <xblock>
         <button class="layui-btn" onclick="x_admin_show('添加用户','./order-add.html')"><i class="layui-icon"></i>添加</button>
-        <span class="x-right" style="line-height:40px">共有数据：${comments.totalElements} 条</span>
+        <span class="x-right" style="line-height:40px">共有数据：${comments.totalElements} 条,      排序方法:${params.sort}</span>
       </xblock>
       <table class="layui-table">
         <thead>
@@ -206,8 +206,15 @@
       function member_del(obj,id){
           layer.confirm('确认要删除吗？',function(index){
               //发异步删除数据
-              $(obj).parents("tr").remove();
-              layer.msg('已删除!',{icon:1,time:1000});
+              $.post('/comment/delComment',{"id":id},function (res) {
+                  if (res.code=='OK'){
+                      $(obj).parents("tr").remove();
+                      layer.msg('已删除!',{icon:1,time:1000});
+                  }else {
+                      layer.msg('删除失败!',{icon:2,time:1000});
+                  }
+              })
+
           });
       }
     </script>

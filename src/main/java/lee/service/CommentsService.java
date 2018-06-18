@@ -1,7 +1,6 @@
 package lee.service;
 
 import lee.domain.Comments;
-import lee.domain.Member;
 import lee.domain.spec.CommentSpec;
 import lee.repository.CommentRepository;
 import lee.repository.RecycleRepository;
@@ -42,6 +41,9 @@ public class CommentsService {
         Specification<Comments> specification = CommentSpec.findComments(movieName,ids,rec);
         Page<Comments> comments = commentRepository.findAll(specification,pageable);
         return comments;
+    }
+    public void delComment(Long id){
+        commentRepository.delete(id);
     }
 
 }

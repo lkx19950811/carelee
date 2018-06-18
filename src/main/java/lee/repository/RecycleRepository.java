@@ -16,10 +16,10 @@ import java.util.List;
  */
 public interface RecycleRepository extends Repository<Recycle> {
     //查询出所有的会员ID
-    @Query("SELECT r.memberId from Recycle r ")
+    @Query("SELECT r.memberId from Recycle r where r.memberId is not null")
     List<String> memberIds();
     //查询出所有的评论ID
-    @Query("SELECT r.comment from Recycle r ")
+    @Query("SELECT r.comment from Recycle r where r.comment is not null ")
     List<String> commentIds();
     /**
      * 批量恢复会员

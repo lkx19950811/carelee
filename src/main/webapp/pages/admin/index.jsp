@@ -89,6 +89,27 @@
                             <cite>评论列表</cite>
                         </a>
                     </li >
+                    <li>
+                        <a _href="/comment/commentDel?page=0&size=${pagesize}&sort=commentId,desc&rec=yes">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>评论回收站</cite>
+                        </a>
+                    </li >
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe6da;</i>
+                    <cite>电影管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/movie/list?page=0&size=${pagesize}">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>电影列表</cite>
+                        </a>
+                    </li >
                 </ul>
             </li>
             <li>

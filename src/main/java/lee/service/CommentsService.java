@@ -1,6 +1,7 @@
 package lee.service;
 
 import lee.domain.Comments;
+import lee.domain.Recycle;
 import lee.domain.spec.CommentSpec;
 import lee.repository.CommentRepository;
 import lee.repository.RecycleRepository;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,4 +48,14 @@ public class CommentsService {
         commentRepository.delete(id);
     }
 
+    public int putRec(String[] ids){
+        List<Recycle> recycles = new ArrayList<>();
+        for (String id:ids){
+            Recycle recycle = new Recycle();
+            recycle.setComment(id);
+            recycles.add(recycle);
+        }
+        List result = recycleRepository.save(recycles);
+        return result.size();
+    }
 }

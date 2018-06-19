@@ -15,10 +15,17 @@ import java.util.List;
  * @desc 回收站仓库类
  */
 public interface RecycleRepository extends Repository<Recycle> {
-    //查询出所有的会员ID
+    /**
+     *
+     * @return
+     */
     @Query("SELECT r.memberId from Recycle r where r.memberId is not null")
     List<String> memberIds();
-    //查询出所有的评论ID
+
+    /**
+     * 查询出所有的评论ID
+     * @return
+     */
     @Query("SELECT r.comment from Recycle r where r.comment is not null ")
     List<String> commentIds();
     /**
@@ -30,4 +37,11 @@ public interface RecycleRepository extends Repository<Recycle> {
     @Transactional
     @Query(value="delete from Recycle r where r.memberId in (:ids) ")
     int deleteByIds(@Param("ids")String[] ids);
+    /**
+     * 批量恢复评论
+     */
+    @Modifying
+    @Transactional
+    @Query(value="delete from Recycle r where r.comment in (:ids) ")
+    int deleteCommentByIds(@Param("ids")String[] ids);
 }

@@ -1,8 +1,14 @@
 package lee.service;
 
+import lee.domain.Movie;
 import lee.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 /**
  * @author leon
@@ -15,5 +21,13 @@ public class MovieService {
     MovieRepository movieRepository;
     public Long countMovie(){
         return movieRepository.count();
+    }
+    public Page<Movie> list(Pageable pageable,String movieName){
+        if (StringUtils.isEmpty(movieName)){
+            return movieRepository.findAll(pageable);
+        }else {
+            movieName = "%" + movieName +"%";
+            return movieRepository.findAllByNameLike(movieName,pageable);
+        }
     }
 }

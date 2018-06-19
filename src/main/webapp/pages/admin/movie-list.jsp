@@ -35,69 +35,52 @@
     </div>
     <div class="x-body">
       <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so">
-          <div class="layui-input-inline">
-            <select name="sortType">
-              <option value="">排序方式</option>
-              <option value="commentId">按ID</option>
-              <option value="commentVote">点赞数</option>
-            </select>
-          </div>
-          <div class="layui-input-inline">
-            <select name="order">
-              <option value="">排序方法</option>
-              <option value="asc">升序</option>
-              <option value="desc">降序</option>
-            </select>
-          </div>
-          <input type="text" name="movieName"  placeholder="请输入电影名" autocomplete="off" class="layui-input" value="${params.movieName}">
+        <form class="layui-form layui-col-md12 x-so" method="post" action="/movie/list?&size=${pagesize}">
+            <div class="layui-input-inline">
+                <select name="sort">
+                    <option value="">排序方式</option>
+                    <option value="ratingNum,asc">按评分升序</option>
+                    <option value="ratingNum,desc">按评分降序</option>
+                </select>
+            </div>
+          <input type="text" name="movieName"  placeholder="请输入电影名" autocomplete="off" class="layui-input" value="${movieName}">
           <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
       </div>
       <xblock>
-          <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-          <span class="x-right" style="line-height:40px">共有数据：${comments.totalElements} 条,      排序方法:${params.sort}</span>
+          <span class="x-right" style="line-height:40px">共有数据：${movies.totalElements} 条</span>
       </xblock>
       <table class="layui-table">
         <thead>
         <tr>
-          <th>
-            <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
-          </th>
-          <th>评论编号</th>
-          <th>昵称</th>
-          <th>评论地址</th>
-          <th>电影名</th>
-          <th>评论内容</th>
-          <th>点赞数</th>
+          <th>电影名称</th>
+          <th>国家</th>
+          <th>导演</th>
+          <th>语言</th>
+          <th>评分</th>
+          <th>上映时间</th>
+          <th>标签</th>
           <th>操作</th>
         </tr>
         </thead>
-        <c:forEach var="commnet" items="${comments.content}">
+        <c:forEach var="movie" items="${movies.content}">
           <tbody>
           <tr>
-            <td>
-              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='${commnet.commentId}'><i class="layui-icon">&#xe605;</i></div>
-            </td>
-            <td>${commnet.commentId}</td>
-            <td>${commnet.commentAuthor}</td>
-            <td>${commnet.commentAuthorUrl}</td>
-            <td>${commnet.commentForMovie}</td>
-            <c:choose>
-              <c:when test="${commnet.commentInfo.length()>40}">
-                <td title="${commnet.commentInfo}">${commnet.commentInfo.substring(0,40)}...........</td>
-              </c:when>
-              <c:otherwise>
-                <td>${commnet.commentInfo}</td>
-              </c:otherwise>
-            </c:choose>
-            <td>${commnet.commentVote}</td>
+            <td>${movie.name}</td>
+            <td>${movie.country=='null'?'未知':movie.country}</td>
+            <td>${movie.director}</td>
+            <td>${movie.language}</td>
+            <td>${movie.ratingNum}</td>
+            <td>${movie.releaseDate=='null'?'未知':movie.releaseDate}</td>
+            <c:if test="${movie.tags.length()>6}">
+                <td title="${movie.tags}">${movie.tags.substring(0,5)}......</td>
+            </c:if>
+            <c:if test="${movie.tags.length()<=6}">
+                <td>${movie.tags}......</td>
+            </c:if>
             <td class="td-manage">
-              <a title="查看"  onclick="x_admin_show('查看','https://www.baidu.com/s?wd=${commnet.commentForMovie}')" href="javascript:;">
+              <a title="查看"  onclick="x_admin_show('查看','https://www.baidu.com/s?wd=${movie.name}')" href="javascript:;">
                 <i class="layui-icon">&#xe63c;</i>
-              </a>
-              <a title="删除" onclick="member_del(this,${commnet.commentId})" href="javascript:;">
-                <i class="layui-icon">&#xe640;</i>
               </a>
             </td>
           </tr>
@@ -149,23 +132,13 @@
             //     }
             // });
 
-            //监听提交
-            form.on('submit(sreach)', function(data){
-                //发异步，把数据提交给php
-                var param = data.field
-                param.sort = "commentId"
-                if (param.sortType){
-                    param.sort = param.sortType
-                }
-                if (param.order){
-                    param.sort = param.sort + ',' + param.order
-                }else {
-                    param.sort = param.sort + ',desc'
-                }
-                console.log(param)
-                location.href = '/comment/list?sort=' + param.sort  +'&movieName=' + param.movieName + '&rec=' + '&size=${params.size}'
-                return false;//如果不加false,就提交表单了
-            });
+            <%--//监听提交--%>
+            <%--form.on('submit(sreach)', function(data){--%>
+                <%--//发异步，把数据提交给php--%>
+                <%--var param = data.field--%>
+                <%--location.href = '/comment/list?sort=' + param.sort  +'&movieName=' + param.movieName + '&rec=' + '&size=${params.size}'--%>
+                <%--return false;//如果不加false,就提交表单了--%>
+            <%--});--%>
         });
     /*分页*/
     layui.use('laypage', function(){
@@ -173,9 +146,9 @@
         //执行一个laypage实例
         laypage.render({
             elem: 'page' //注意，这里的  是 ID，不用加 # 号
-            ,count: ${comments.totalElements} //数据总数，从服务端得到
-            ,limit:${params.size}
-            ,curr:${currPage+1}//服务器返回的页数从0开始,所以要加一
+            ,count: ${movies.totalElements} //数据总数，从服务端得到
+            ,limit:${pagesize}
+            ,curr:${movies.number + 1}//服务器返回的页数从0开始,所以要加一
             ,layout:['prev', 'page', 'next','count','skip']
             ,jump: function(obj, first){
                 //obj包含了当前分页的所有参数，比如：
@@ -183,57 +156,12 @@
                 // console.log(obj.limit); //得到每页显示的条数
                 //首次不执行
                 if(!first){
-                    location.href = '/comment/list?sort=${params.sort.toString()}&size=' + obj.limit + '&page=' + (obj.curr-1) +'&movieName=${params.movieName}'
+                    location.href = '/movie/list?size=' + obj.limit + '&page=' + (obj.curr-1) +'&movieName=${movieName}&sort=${sort}'
                 }
 
             }});
         })
 
-      layui.use('laydate', function(){
-        var laydate = layui.laydate;
-        
-        //执行一个laydate实例
-        laydate.render({
-          elem: '#start' //指定元素
-        });
-
-        //执行一个laydate实例
-        laydate.render({
-          elem: '#end' //指定元素
-        });
-      });
-
-      /*用户-删除*/
-      function member_del(obj,id){
-          layer.confirm('确认要删除吗？',function(index){
-              //发异步删除数据
-              $.post('/comment/deltoRecComment',{"ids":[id]},function (res) {
-                  if (res.code=='OK'){
-                      $(obj).parents("tr").remove();
-                      layer.msg('已删除!可以在回收站中找回',{icon:1,time:1000});
-                  }else {
-                      layer.msg('删除失败!',{icon:2,time:1000});
-                  }
-              })
-
-          });
-      }
-        function delAll () {
-            var data = tableCheck.getData();
-            console.log(data)
-            layer.confirm('确认要删除吗？删除的用户可以在回收站找回',function(index){
-                //捉到所有被选中的，发异步进行删除
-                $.post("/comment/deltoRecComment",{"ids":data},function (res) {
-                    if (res.code=="OK"){
-                        layer.msg(res.message, {icon: 1});
-                        $(".layui-form-checked").not('.header').parents('tr').remove();
-                    }else {
-                        layer.msg(res.message, {icon: 1});
-                    }
-                },"json")
-
-            });
-        }
     </script>
   </body>
 

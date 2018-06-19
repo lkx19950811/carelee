@@ -31,7 +31,7 @@
           <cite>导航元素</cite></a>
       </span>
       <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
-        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+        <i class="layui-icon" style="line-height:30px">&#xe9aa;</i></a>
     </div>
     <div class="x-body">
       <div class="layui-row">
@@ -221,7 +221,7 @@
         console.log(data)
         layer.confirm('确认要删除吗？删除的用户可以在回收站找回',function(index){
             //捉到所有被选中的，发异步进行删除
-            $.post("/member/delMembers",{"ids":data},function (res) {
+            $.post("/member/putRec",{"ids":data},function (res) {
                 if (res.code=="OK"){
                   layer.msg(res.message, {icon: 1});
                   $(".layui-form-checked").not('.header').parents('tr').remove();

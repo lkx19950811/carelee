@@ -64,7 +64,7 @@ public class Movie {
      * 豆瓣评分
      */
     @Column(name = "ratingNum")
-    private String ratingNum;
+    private Double ratingNum;
     /**
      * 标签
      */
@@ -151,11 +151,11 @@ public class Movie {
         runtime = runtime;
     }
 
-    public String getRatingNum() {
+    public Double getRatingNum() {
         return ratingNum;
     }
 
-    public void setRatingNum(String ratingNum) {
+    public void setRatingNum(Double ratingNum) {
         this.ratingNum = ratingNum;
     }
 

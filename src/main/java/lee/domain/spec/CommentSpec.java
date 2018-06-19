@@ -29,7 +29,10 @@ public class CommentSpec {
             Path<Date> id = root.get("commentId");
             List<Predicate> list = new ArrayList<>();//创建条件空list
             //TODO 有问题
-            if (ids!=null && ids.size()>0){
+            if (ids!=null){
+                if (ids.size()<=0){
+                    ids.add("-1");
+                }
                 List<Long> idsL = ids.stream().map(Long::valueOf).collect(Collectors.toList());
                 if (StringUtils.isEmpty(rec)){//回收站标识不存在,查询不在回收站表的member
                     list.add(cb.not(id.in(idsL)));

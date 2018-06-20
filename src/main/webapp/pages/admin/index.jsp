@@ -157,19 +157,19 @@
                             </a>
                         </li >
                         <li>
-                            <a _href="admin-role.html">
+                            <a _href="/admin/adminRole">
                                 <i class="iconfont">&#xe6a7;</i>
                                 <cite>角色管理</cite>
                             </a>
                         </li >
                         <li>
-                            <a _href="admin-cate.html">
+                            <a _href="/admin/adminCate">
                                 <i class="iconfont">&#xe6a7;</i>
                                 <cite>权限分类</cite>
                             </a>
                         </li >
                         <li>
-                            <a _href="admin-rule.html">
+                            <a _href="/admin/adminRule">
                                 <i class="iconfont">&#xe6a7;</i>
                                 <cite>权限管理</cite>
                             </a>

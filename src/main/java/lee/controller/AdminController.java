@@ -78,9 +78,44 @@ public class AdminController {
         modelAndView.addObject("user",user);
         return modelAndView;
     }
+
+    /**
+     * 管理员列表
+     * @return
+     */
     @RequestMapping("adminList")
     public ModelAndView adminList(){
         ModelAndView modelAndView = new ModelAndView("/admin/admin-list");
+        return modelAndView;
+    }
+
+    /**
+     * 角色管理
+     * @return
+     */
+    @RequestMapping("adminRole")
+    public ModelAndView adminRole(){
+        ModelAndView modelAndView = new ModelAndView("/admin/admin-role");
+        return modelAndView;
+    }
+
+    /**
+     * 权限分类
+     * @return
+     */
+    @RequestMapping("adminCate")
+    public ModelAndView adminCate(){
+        ModelAndView modelAndView = new ModelAndView("/admin/admin-cate");
+        return modelAndView;
+    }
+
+    /**
+     * 权限管理
+     * @return
+     */
+    @RequestMapping("adminRule")
+    public ModelAndView adminRule(){
+        ModelAndView modelAndView = new ModelAndView("/admin/admin-rule");
         return modelAndView;
     }
 }

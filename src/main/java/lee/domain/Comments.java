@@ -40,7 +40,7 @@ public class Comments {
      * 评论点赞数量
      */
     @Column(name = "commentVote")
-    private Long commentVote = 0L;
+    private String commentVote = "0";
     /**
      * 评论的电影名
      */
@@ -83,11 +83,11 @@ public class Comments {
         this.commentAuthorUrl = commentAuthorUrl;
     }
 
-    public Long getCommentVote() {
+    public String getCommentVote() {
         return commentVote;
     }
 
-    public void setCommentVote(Long commentVote) {
+    public void setCommentVote(String commentVote) {
         this.commentVote = commentVote;
     }
 

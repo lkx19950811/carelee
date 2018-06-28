@@ -39,7 +39,7 @@ public class ScheduleTask {
 //        logger.info("===initialDelay: 第{}次执行方法", initialDelayCount++);
 //    }
 
-    @Scheduled(cron = "0 0/1 * * * ?")  //cron接受cron表达式，根据cron表达式确定定时规则
+//    @Scheduled(cron = "0 0/1 * * * ?")  //cron接受cron表达式，根据cron表达式确定定时规则
     public void testCron() throws Exception {
         String name = RandomMock.makeName();
         Member member = new Member();

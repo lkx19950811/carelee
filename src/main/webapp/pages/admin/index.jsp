@@ -105,7 +105,7 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="/movie/list?page=0&size=${pagesize}">
+                        <a _href="/movie/list?page=0&size=${pagesize}&sort=ratingNum,desc">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>电影列表</cite>
                         </a>

@@ -82,12 +82,12 @@
                     <tbody>
                         <tr>
                             <td >
-                                <a class="x-a" href="/" target="_blank">新版x-admin 2.0上线了</a>
+                                <a class="x-a" href="/" target="_blank">爬虫项目已经上线</a>
                             </td>
                         </tr>
                         <tr>
                             <td >
-                                <a class="x-a" href="/" target="_blank">交流qq群:(519492808)</a>
+                                <a class="x-a" href="/" target="_blank">此项目暂时不维护</a>
                             </td>
                         </tr>
                     </tbody>

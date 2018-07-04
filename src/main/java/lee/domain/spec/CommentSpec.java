@@ -8,6 +8,7 @@ import org.springframework.util.StringUtils;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

@@ -41,6 +41,8 @@
                     <option value="">排序方式</option>
                     <option value="ratingNum,asc">按评分升序</option>
                     <option value="ratingNum,desc">按评分降序</option>
+                    <option value="movieId,desc">按爬取时间降序</option>
+                  <option value="movieId,desc">按爬取时间升序</option>
                 </select>
             </div>
           <input type="text" name="movieName"  placeholder="请输入电影名" autocomplete="off" class="layui-input" value="${movieName}">

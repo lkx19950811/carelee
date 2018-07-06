@@ -27,9 +27,9 @@
                                     <ul class="layui-row layui-col-space10 layui-this">
                                         <li class="layui-col-xs2">
                                             <a href="javascript:;" class="x-admin-backlog-body">
-                                                <h3>心跳数</h3>
+                                                <h3>爬取链接数</h3>
                                                 <p>
-                                                    <cite>66</cite></p>
+                                                    <cite>${countRecord}</cite></p>
                                             </a>
                                         </li>
                                         <li class="layui-col-xs2">

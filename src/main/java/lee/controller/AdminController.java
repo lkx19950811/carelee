@@ -2,7 +2,9 @@ package lee.controller;
 
 import lee.common.Code;
 import lee.common.ReturnObject;
+import lee.domain.Record;
 import lee.domain.User;
+import lee.repository.RecordRepository;
 import lee.service.CommentsService;
 import lee.service.MemberService;
 import lee.service.MovieService;
@@ -41,6 +43,8 @@ public class AdminController {
     MovieService movieService;
     @Autowired
     MemberService memberService;
+    @Autowired
+    RecordRepository recordRepository;
     @Value("${size}")
     private String pagesize;
     @RequestMapping(value = "/login",method = {RequestMethod.POST,RequestMethod.GET})
@@ -70,12 +74,14 @@ public class AdminController {
         Long countComment = commentsService.CountComment();//评论计数
         Long countMovie = movieService.countMovie();
         Long countUser = memberService.countMember();
+        Long countRecord = recordRepository.count();
         User user =  (User) request.getSession().getAttribute("user");
         ModelAndView modelAndView = new ModelAndView("/admin/welcome");
         modelAndView.addObject("countComment",countComment);
         modelAndView.addObject("countMovie",countMovie);
         modelAndView.addObject("countUser",countUser);
         modelAndView.addObject("user",user);
+        modelAndView.addObject("countRecord",countRecord);
         return modelAndView;
     }
 

@@ -82,12 +82,12 @@
                     <tbody>
                         <tr>
                             <td >
-                                <a class="x-a" href="/" target="_blank">爬虫项目已经上线</a>
+                                <a class="x-a" href="https://github.com/lkx19950811/crawler" target="_blank">爬虫项目已经上线</a>
                             </td>
                         </tr>
                         <tr>
                             <td >
-                                <a class="x-a" href="/" target="_blank">此项目暂时不维护</a>
+                                <a class="x-a" href="#" target="_blank">此项目暂时不维护</a>
                             </td>
                         </tr>
                     </tbody>

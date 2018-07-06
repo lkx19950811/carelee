@@ -160,11 +160,8 @@
                 if(!first){
                     location.href = '/movie/list?size=' + obj.limit + '&page=' + (obj.curr-1) +'&movieName=${movieName}&sort=${sort}'
                 }
-
             }});
         })
-
     </script>
   </body>
-
 </html>

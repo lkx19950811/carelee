@@ -149,6 +149,11 @@
       <optional>true</optional>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>com.github.binarywang</groupId>
+      <artifactId>java-emoji-converter</artifactId>
+      <version>0.0.1</version>
+    </dependency>
   </dependencies>
   <!-- Package as an executable jar -->
   <build>

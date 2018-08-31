@@ -29,7 +29,7 @@ public class SpecTest extends TestBasic{
     }
     @Test
     public void test2(){
-        List<Task> list = taskRepository.findAll(TaskSpec.findProject());
+        List<Task> list = taskRepository.findAll(TaskSpec.findProject("测试"));
         System.out.println(list);
     }
 //    @Test

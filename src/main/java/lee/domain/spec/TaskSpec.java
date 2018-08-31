@@ -26,11 +26,11 @@ public class TaskSpec {
            return cb.like(exp1,"aa");
         };
     }
-    public static Specification<Task> findProject() {
+    public static Specification<Task> findProject(String str) {
         return (root, query, cb) -> {
-            Join<Task, Project> join = root.join("project", JoinType.INNER);
+            Join<Task, Project> join = root.join("project", JoinType.RIGHT);
             Path<String> exp4 = join.get("projectName");
-            return cb.like(exp4, "%测试%");
+            return cb.like(exp4, "%" + str +"%");
         };
     }
 }

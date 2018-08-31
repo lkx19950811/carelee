@@ -1,23 +1,24 @@
-//package lee.controller;
-//
-//import lee.detail.Student;
-//import lee.task.Producers;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.web.bind.annotation.*;
-//
-//import javax.servlet.http.HttpServletRequest;
-//import java.util.HashMap;
-//import java.util.Map;
-//
-///**
-// * 描述:
-// *
-// * @author Leo
-// * @create 2018-03-13 上午 2:11
-// */
-//@RestController
-//@RequestMapping(value = "/test")
-//public class TestController {
+package lee.controller;
+
+import com.alibaba.fastjson.JSONObject;
+import lee.detail.Student;
+import lee.utils.DataHelper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * 描述:
+ *
+ * @author Leo
+ * @create 2018-03-13 上午 2:11
+ */
+@RestController
+@RequestMapping(value = "/test")
+public class TestController {
 //
 //    @Autowired
 //    Producers producers;
@@ -57,4 +58,20 @@
 //        request.setAttribute("lkx","lkx");
 //        System.out.println("最先执行的方法");
 //    }
-//}
+    @RequestMapping("show")
+    public String show(HttpServletRequest request){
+        Map<String,String[]> map = request.getParameterMap();
+        JSONObject json = DataHelper.getJsonFromREQ(request);
+        if (map.size()==0){
+            if (json!=null){
+                return json.toJSONString();
+            }else{
+                return "没有东西!";
+            }
+        }else {
+            StringBuilder sb = new StringBuilder();
+            map.forEach((k,v)-> sb.append(k).append("=").append(v[0]).append("&"));
+            return sb.toString();
+        }
+    }
+}

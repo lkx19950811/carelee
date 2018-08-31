@@ -1,6 +1,7 @@
 package lee.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lee.utils.DataHelper;
 
 import javax.persistence.*;
 
@@ -35,7 +36,7 @@ public class Comments {
      * 评论者头像链接
      */
     @Column(name = "commentAuthorImgUrl")
-    private String commentAuthorUrl;
+    private String commentAuthorImgUrl;
     /**
      * 评论点赞数量
      */
@@ -60,27 +61,27 @@ public class Comments {
     }
 
     public String getCommentInfo() {
-        return commentInfo;
+        return DataHelper.emojiDecode(commentInfo);
     }
 
     public void setCommentInfo(String commentInfo) {
-        this.commentInfo = commentInfo;
+        this.commentInfo = DataHelper.emojiEncode(commentInfo);
     }
 
     public String getCommentAuthor() {
-        return commentAuthor;
+        return DataHelper.emojiDecode(commentAuthor);
     }
 
     public void setCommentAuthor(String commentAuthor) {
-        this.commentAuthor = commentAuthor;
+        this.commentAuthor = DataHelper.emojiEncode(commentAuthor);
     }
 
-    public String getCommentAuthorUrl() {
-        return commentAuthorUrl;
+    public String getCommentAuthorImgUrl() {
+        return commentAuthorImgUrl;
     }
 
-    public void setCommentAuthorUrl(String commentAuthorUrl) {
-        this.commentAuthorUrl = commentAuthorUrl;
+    public void setCommentAuthorImgUrl(String commentAuthorImgUrl) {
+        this.commentAuthorImgUrl = commentAuthorImgUrl;
     }
 
     public String getCommentVote() {
@@ -105,6 +106,20 @@ public class Comments {
 
     public void setRecordId(String recordId) {
         this.recordId = recordId;
+    }
+
+    @Override
+    public String toString() {
+        String str = "Comments{" +
+                "commentId=" + commentId +
+                ", commentInfo='" + commentInfo + '\'' +
+                ", commentAuthor='" + commentAuthor + '\'' +
+                ", commentAuthorImgUrl='" + commentAuthorImgUrl + '\'' +
+                ", commentVote='" + commentVote + '\'' +
+                ", commentForMovie='" + commentForMovie + '\'' +
+                ", recordId='" + recordId + '\'' +
+                '}';
+        return DataHelper.emojiDecode(str);
     }
 
 }

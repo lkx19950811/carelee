@@ -36,13 +36,13 @@ public class CareTopicLogg {
 
                 String argName = getArgName(joinPoint)[i];
 
-                argsBuf.append("参数"+(i+1)+"-"+argName+":");
+                argsBuf.append("参数").append(i + 1).append("-").append(argName).append(":");
 
                 appendArgContent(argsBuf, arg);
             }
         }
 
-        StringBuffer request = new StringBuffer("\n调用服务接口:" + joinPoint.getSignature() + ".\n实现类:" + joinPoint.getTarget() + "\n");
+        StringBuilder request = new StringBuilder("\n调用服务接口:" + joinPoint.getSignature() + ".\n实现类:" + joinPoint.getTarget() + "\n");
 
         if(!StringUtils.isEmpty(argsBuf.toString()))
         {
@@ -77,28 +77,28 @@ public class CareTopicLogg {
             if(arg instanceof ServletResponse){
                 argsBuf.append("HttpSevletResponse \n");
             }else if(arg.getClass().isPrimitive() || arg instanceof String){
-                argsBuf.append(arg.toString()+"\n");
+                argsBuf.append(arg.toString()).append("\n");
             }else if(arg.getClass().isArray()){
                 Object[] args = (Object[])arg;
-                argsBuf.append("size:"+args.length+"\n");
+                argsBuf.append("size:").append(args.length).append("\n");
                 for (Object sub : args) {
                     appendArgContent(argsBuf, sub);
                 }
             }else if(arg instanceof Collection){
                 Collection args = (Collection)arg;
-                argsBuf.append("size:"+args.size()+"\n");
+                argsBuf.append("size:").append(args.size()).append("\n");
                 for (Object sub : args) {
                     appendArgContent(argsBuf, sub);
                 }
             }else if(arg instanceof Page){
-                argsBuf.append(writeArgToJson(arg)+"\n");
+                argsBuf.append(writeArgToJson(arg)).append("\n");
                 appendArgContent(argsBuf, ((Page)arg).getContent());
             }else if(arg instanceof Map){
                 Map<?, ?> map = (Map<?, ?>)arg;
-                argsBuf.append("size:" + map.size() + "\n");
+                argsBuf.append("size:").append(map.size()).append("\n");
                 argsBuf.append(String.valueOf(map));
             }else{
-                argsBuf.append(writeArgToJson(arg)+"\n");
+                argsBuf.append(writeArgToJson(arg)).append("\n");
             }
         }
     }

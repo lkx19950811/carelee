@@ -81,7 +81,7 @@
             </td>
             <td>${commnet.commentId}</td>
             <td>${commnet.commentAuthor}</td>
-            <td>${commnet.commentAuthorUrl}</td>
+            <td>${commnet.commentAuthorImgUrl}</td>
             <td>${commnet.commentForMovie}</td>
             <c:choose>
               <c:when test="${commnet.commentInfo.length()>40}">

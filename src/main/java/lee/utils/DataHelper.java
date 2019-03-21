@@ -331,6 +331,36 @@ public class DataHelper {
 		return res;
     }
     /**
+     * 从httpRequest的body中读取str
+     * @param request HTTPRequest对象
+     * @return str
+     */
+    public static String getStrFromREQ(HttpServletRequest request){
+        String res = "";
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new InputStreamReader(request.getInputStream(), "utf-8"));
+            StringBuilder sb = new StringBuilder();
+            String temp;
+            while ((temp = br.readLine()) != null) {
+                sb.append(temp);
+            }
+            br.close();
+            res = sb.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if (br != null) {
+                    br.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return res;
+    }
+    /**
      * 将emojiStr 转码
      * 正常字符不受牵连
      * @param emojiStr

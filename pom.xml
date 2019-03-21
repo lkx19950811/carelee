@@ -157,60 +157,48 @@
   </dependencies>
   <!-- Package as an executable jar -->
   <build>
+    <finalName>carelee</finalName>
     <plugins>
-      <!-- compiler -->
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
+      </plugin>
+      <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.5</version>
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <!--打包只能用1.4.2.RELEASE 版本的，其它版本的都不可以。这个目前是springboot的bug。目前还未看到官方的解说。-->
-        <version>1.4.2.RELEASE</version>
-        <configuration>
-          <mainClass>lee.Carelee</mainClass>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <configuration>
-          <fork>true</fork>
-          <addResources>true</addResources>
+          <encoding>UTF-8</encoding>
+          <!--配置本地jar包在项目的存放路径 找不到资源-->
+          <compilerArguments>
+            <extdirs>${project.basedir}/libs</extdirs>
+          </compilerArguments>
         </configuration>
       </plugin>
     </plugins>
     <resources>
-      <!-- 打包时将jsp文件拷贝到META-INF目录下-->
       <resource>
-        <!-- 指定resources插件处理哪个目录下的资源文件 -->
-        <directory>src/main/webapp</directory>
-        <!--注意此次必须要放在此目录下才能被访问到-->
-        <targetPath>META-INF/resources</targetPath>
+        <directory>libs</directory>
+        <targetPath>BOOT-INF/lib/</targetPath><!-- 复制不属于Maven库的jar到lib中 -->
         <includes>
-          <include>**/**</include>
+          <include>**/*.jar</include>
         </includes>
       </resource>
       <resource>
         <directory>src/main/resources</directory>
-        <includes>
-          <include>**/**</include>
-        </includes>
-        <filtering>false</filtering>
+        <targetPath>BOOT-INF/classes/</targetPath><!-- 解决打包是资源文件不存在的问题 -->
       </resource>
       <resource>
-        <directory>src/main/java</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
+        <directory>src/main/resources</directory><!-- 编译时复制到根目录一份资源文件，无需在通过项目配置 -->
+        <targetPath></targetPath>
       </resource>
     </resources>
   </build>
-
 </project>
